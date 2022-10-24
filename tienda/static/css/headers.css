@@ -23,3 +23,20 @@
  .texto:hover{
   color: #fff;
  }
+
+ .dropdown1{
+  display: block;
+  padding: var(--bs-nav-link-padding-y) var(--bs-nav-link-padding-x);
+  font-size: var(--bs-nav-link-font-size);
+  font-weight: var(--bs-nav-link-font-weight);
+  color: #fff;
+  text-decoration: none;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
+ }
+
+ #avatar{
+  height: 58px;
+  width: 58px;
+  margin-right: 7rem;
+  border-radius: 50%;
+}

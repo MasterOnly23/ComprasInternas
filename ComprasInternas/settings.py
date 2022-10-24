@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'tienda.apps.TiendaConfig',
+    'usuarios.apps.UsuariosConfig',
 
 ]
 
@@ -116,8 +117,16 @@ USE_I18N = True
 USE_TZ = True
 
 
+#AUTH DE USUARIO
+AUTH_USER_MODEL = 'usuarios.Usuarios'
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
+
+DEFAULT_IMAGE_PATH = 'media/default.png'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 
 STATIC_URL = 'static/'
 
@@ -131,5 +140,12 @@ STATIC_URL = 'static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_TMP = os.path.join(BASE_DIR, 'static')
+
+
+os.makedirs(STATIC_TMP, exist_ok= True)
+os.makedirs(STATIC_ROOT, exist_ok= True)
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
