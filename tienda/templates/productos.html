@@ -1,6 +1,19 @@
-{% extends 'base.html' %}
+{% extends 'layout.html' %}
+{% load account %}
+
+
 
 {% block content %}
+
+<!-- {% user_display user as name %}
+
+<h1 id="usuario">{{ name|upper }}</h1>
+
+<script>
+  let name = document.getElementById("usuario");
+  let name_sep = name.innerHTML.split("_").join(" ")
+  name.innerHTML = name_sep
+</script> -->
 
 <div class="album py-5 bg-light">
     <div class="container">

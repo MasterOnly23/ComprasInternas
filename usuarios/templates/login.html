@@ -1,0 +1,35 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% load socialaccount %}
+{% providers_media_js %}
+
+
+{% block content %}
+
+
+        
+    <div id="contenedor">
+        <div id="central">
+            <div id="login">
+                <div class="titulo">
+                    Bienvenido
+                </div>
+                <form id="loginform" method="POST"> {% csrf_token %}
+                    <input type="text" name="usuario" placeholder="Usuario" required>
+                    
+                    <input type="password" placeholder="Contraseña" name="password" required>
+                    
+                    <button type="submit" title="Ingresar" name="Ingresar">Login</button>
+                </form>
+                <div class="pie-form">
+                    <a href="#">¿Perdiste tu contraseña?</a>
+                    <a href="#">¿No tienes Cuenta? Registrate</a>
+                    <a href="{% provider_login_url 'google' %}"><img src="{% static 'img/google-logo.png' %}" alt="logo google" id="login-google">Inicia Sesion con Google</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+{% endblock %}

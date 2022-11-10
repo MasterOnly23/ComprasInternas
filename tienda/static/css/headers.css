@@ -37,6 +37,36 @@
  #avatar{
   height: 58px;
   width: 58px;
-  margin-right: 7rem;
+  margin-right: 1.7rem;
+  margin-left: 2rem;
   border-radius: 50%;
+}
+
+#usuario{
+  text-decoration: none !important;
+  color: var(--bs-light) !important;
+}
+
+.link-avatar{
+  text-decoration: none !important;
+}
+
+
+/*Notifications*/
+.notification {
+  text-align: center;
+  padding: 10px 20px;
+  border-radius: 4px;
+  color: #fff;
+  font-size: 0.9rem;
+  background: #007E33;
+}
+.success {
+  background: #43DC7E;
+  color: white;
+}
+.error {
+  background: #AB3444;
+  color: white;
+  margin-bottom: 20px;
 }

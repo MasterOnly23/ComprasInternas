@@ -39,8 +39,17 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    #APPS
     'tienda.apps.TiendaConfig',
     'usuarios.apps.UsuariosConfig',
+
+    #GOOGLE AUTH
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
 
 ]
 
@@ -59,7 +68,7 @@ ROOT_URLCONF = 'ComprasInternas.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [f"{BASE_DIR}/tienda/templates"],
+        'DIRS': [f"{BASE_DIR}/tienda/templates", f"{BASE_DIR}/usuarios/templates", os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -132,6 +141,19 @@ STATIC_URL = 'static/'
 
 # STATICFILES_DIRS = [f'{BASE_DIR}/SocialMedia/static']
 
+#AUTH BACKEND
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+
+ACCOUNT_LOGOUT_ON_GET = True
+
+SITE_ID = 1
+
+
+LOGIN_REDIRECT_URL = 'index'
+LOGIN_URL = 'login'
 
 # DEFAULT_IMAGE_PATH = 'media/default.png'
 

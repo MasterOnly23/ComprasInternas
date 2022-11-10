@@ -1,0 +1,32 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% load socialaccount %}
+{% providers_media_js %}
+
+
+{% block content %}
+
+
+        
+    <div id="contenedor">
+        <div id="central">
+            <div id="login">
+                <div class="titulo">
+                    Iniciar Sesion con Google
+                </div>
+                    <form class="login" id="loginform" method="POST" action="{% url 'login-google' %}">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        {% if redirect_field_value %}
+                        <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+                        {% endif %}
+                    
+                    <button type="submit" title="Ingresar" name="Ingresar">Continuar</button>
+                </form>
+            </div>
+           
+        </div>
+    </div>
+
+
+{% endblock %}
