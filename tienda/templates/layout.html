@@ -158,7 +158,7 @@
           <div class="container">
             {% user_display user as name %}
           <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0"></ul>
-          <li class="nav-item dropdown" style="list-style: none;"><a href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" class="link-avatar"><img src="{{ request.user.profile.image.url }}" alt="alt"  id="avatar"><span id="usuario">{{ name|upper }}</span></a>
+          <li class="nav-item dropdown" style="list-style: none;"><a href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" class="link-avatar"><img src="{% static 'img/default.png' %}" alt="alt"  id="avatar"><span id="usuario">{{ name|upper }}</span></a>
           
             <ul class="dropdown-menu">
               <li><a class="dropdown-item" href="#">Perfil</a></li>
