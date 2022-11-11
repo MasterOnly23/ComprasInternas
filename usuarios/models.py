@@ -3,20 +3,17 @@ from django.contrib.auth.models import User, AbstractUser
 from django.utils import timezone
 # Create your models here.
 
-
-
-
 class Usuarios(AbstractUser):
 
-    email = models.EmailField('Direccion email', unique=True)
-    username = models.CharField('Repetir email', max_length=50)
-    first_name = models.CharField(max_length=50)
-    last_name = models.CharField(max_length=80)
+    email = models.EmailField('Direccion email', unique=True, blank=True)
+    username = models.CharField('Repetir email', max_length=50, blank=True)
+    first_name = models.CharField(max_length=50, blank=True)
+    last_name = models.CharField(max_length=80, blank=True)
 
     #areas de trabajo
     areas = (('Administracion','Administracion'),('Sistemas','Sistemas'),('Imagen','Imagen'),('RRHH','RRHH'), ('Abastecimiento','Abastecimiento'),
     ('Mantenimiento','Mantenimiento'),('Gerentes','Gerentes'), ('Compras','Compras'), ('Legales','Legales'), ('Otra','Otra'))
-    area = models.CharField(max_length=20 ,choices=areas, null=False)
+    area = models.CharField(max_length=20 ,choices=areas, null=False, blank=True)
 
 
     #tipo de usuario
