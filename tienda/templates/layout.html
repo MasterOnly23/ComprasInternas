@@ -163,14 +163,14 @@
             <ul class="dropdown-menu">
               <li><a class="dropdown-item" href="#">Perfil</a></li>
               <li><hr class="dropdown-divider"></li>
-              <li><a class="dropdown-item" href="{% url 'logout' %}">Salir</a></li>
+              <li><a class="dropdown-item" href="{% url 'account_logout' %}">Salir</a></li>
             </ul>
           </li>
           
           </ul>
         </div>
           {% else %}
-          <a href="{% provider_login_url 'google' %}"><button type="button" class="btn btn-outline-light me-2">Iniciar Sesion</button></a>
+          <a href="{% provider_login_url 'google' process='connect' %}"><button type="button" class="btn btn-outline-light me-2">Iniciar Sesion</button></a>
           <button type="button" class="btn btn-warning">Registrarse</button>
           {% endif %}
         </div>
