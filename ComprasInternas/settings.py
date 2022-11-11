@@ -53,6 +53,8 @@ INSTALLED_APPS = [
 
 ]
 
+SITE_ID = 1
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -117,9 +119,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'es-AR'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Buenos_Aires'
 
 USE_I18N = True
 
@@ -127,7 +129,7 @@ USE_TZ = True
 
 
 #AUTH DE USUARIO
-AUTH_USER_MODEL = 'usuarios.Usuarios'
+# AUTH_USER_MODEL = 'usuarios.Usuarios'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
@@ -149,7 +151,7 @@ AUTHENTICATION_BACKENDS = [
 
 ACCOUNT_LOGOUT_ON_GET = True
 
-SITE_ID = 1
+
 
 
 LOGIN_REDIRECT_URL = 'index'
