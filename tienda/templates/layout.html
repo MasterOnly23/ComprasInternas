@@ -170,7 +170,7 @@
           </ul>
         </div>
           {% else %}
-          <a href="{% provider_login_url 'google' process='connect' %}"><button type="button" class="btn btn-outline-light me-2">Iniciar Sesion</button></a>
+          <a href="{% url 'google_login' %}"><button type="button" class="btn btn-outline-light me-2">Iniciar Sesion</button></a>
           <button type="button" class="btn btn-warning">Registrarse</button>
           {% endif %}
         </div>

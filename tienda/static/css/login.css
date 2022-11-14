@@ -13,7 +13,7 @@ body {
     align-items: flex-start;
     justify-content: center;
     
-    margin-top: 12rem;
+    margin-top: 10rem;
     padding: 0;
 
     min-height: 100vh;
@@ -30,12 +30,23 @@ body {
     font-size: 250%;
     color:#bbe1fa;
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
 }
+
+.titulo-google{
+    font-size: 170%;
+    color:#1b262c;
+    text-align: center;
+    margin-bottom: 20px;
+    justify-content: center;
+
+}
+
+
 
 #login {
     width: 100%;
-    padding: 50px 30px;
+    padding: 25px 30px 40px 30px;
     background-color: #3282b8;
     
     -webkit-box-shadow: 0px 0px 5px 5px rgba(0,0,0,0.15);
@@ -139,7 +150,16 @@ body {
     color: #3282b8;
 }
 
+/* proveedor google */
 
 #login-google {
     width: 70px;
 }
+
+.boton-google{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+

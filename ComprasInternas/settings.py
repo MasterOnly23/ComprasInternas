@@ -53,7 +53,21 @@ INSTALLED_APPS = [
 
 ]
 
-SITE_ID = 1
+SITE_ID = 2
+
+
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'SCOPE': [
+            'profile',
+            'email',
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'online',
+        }
+    }
+}
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -154,8 +168,8 @@ ACCOUNT_LOGOUT_ON_GET = True
 
 
 
-LOGIN_REDIRECT_URL = 'index'
-LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = '/'
+# LOGIN_URL = 'login'
 
 # DEFAULT_IMAGE_PATH = 'media/default.png'
 
