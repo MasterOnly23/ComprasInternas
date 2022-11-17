@@ -23,7 +23,7 @@ from django.contrib.auth.views import LoginView, LogoutView #vistas predefinidas
 urlpatterns = [
     path('login/', LoginView.as_view(template_name='login.html'), name='login'),
     path('logout/', LogoutView.as_view(template_name='productos.html'), name='logout'),
-
+    
     # path("loginGoogle/", LoginView.as_view('login-google.html'), name="account_login"),
 
 

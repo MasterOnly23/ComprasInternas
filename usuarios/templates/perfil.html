@@ -1,0 +1,28 @@
+{% extends 'layout.html' %}
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'css/provider-google.css' %}">
+
+
+{% block content %}
+<div id="contenedor">
+    <div id="central">
+        <div id="login">
+
+            <div class="data" id="data">
+                <img src="{{ user.profile.image.url}}" id="img-avatar">
+                    <h2 class="label-data-title">Username: </h2><p class="label-data">{{ user.username }}</p>
+                    <h2 class="label-data-title">Email: </h2><p class="label-data">{{ user.email }}</p>
+                    <h2 class="label-data-title">First Name: </h2><p class="label-data">{{ user.first_name }}</p>
+                    <h2 class="label-data-title">Last Name: </h2><p class="label-data">{{ user.last_name }}</p> 
+                    <h2 class="label-data-title">Area: </h2><p class="label-data">{{ user.area }}</p>        
+            </div> 
+
+
+
+
+        </div>
+
+    </div>
+    </div>
+    {% endblock %}

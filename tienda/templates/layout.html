@@ -161,7 +161,7 @@
           <li class="nav-item dropdown" style="list-style: none;"><a href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" class="link-avatar"><img src="{% static 'img/default.png' %}" alt="alt"  id="avatar"><span id="usuario">{{ name|upper }}</span></a>
           
             <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="#">Perfil</a></li>
+              <li><a class="dropdown-item" href="{% url 'perfil' %}">Perfil</a></li>
               <li><hr class="dropdown-divider"></li>
               <li><a class="dropdown-item" href="{% url 'account_logout' %}">Salir</a></li>
             </ul>
@@ -170,8 +170,8 @@
           </ul>
         </div>
           {% else %}
-          <a href="{% url 'google_login' %}"><button type="button" class="btn btn-outline-light me-2">Iniciar Sesion</button></a>
-          <button type="button" class="btn btn-warning">Registrarse</button>
+          <a href="{% url 'account_login' %}"><button type="button" class="btn btn-outline-light me-2">Iniciar Sesion</button></a>
+          <a href="{% url 'account_signup' %}"><button type="button" class="btn btn-warning">Registrarse</button></a>
           {% endif %}
         </div>
       </div>

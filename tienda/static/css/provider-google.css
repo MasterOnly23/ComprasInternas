@@ -1,6 +1,7 @@
 .container-provider{
+
     font-family: 'Overpass', sans-serif;
-    font-size: 130%;
+    font-size: 110%;
     color:#1b262c;
     width: 100%;
     height: 70px;
@@ -13,7 +14,7 @@
     
     background-color: #bbe1fa;
     
-    margin-top: 50px;
+    margin-top: 20px;
 }
 
 .list-provider{
@@ -29,3 +30,52 @@
     color: #1b262c;
 }
 
+#id_remember{
+    display: flex;
+    justify-content: start;
+    align-items: start;
+    width: 35px;
+    cursor: pointer;
+
+}
+
+/* p{
+    display: flex;
+} */
+
+.button{
+    color: #bbe1fa !important;
+}
+
+.button:hover{
+    color: #0f4c75 !important;
+}
+
+.container-provider:hover{
+    background-color: #0f4c75;
+}
+
+.registrarse{
+    margin-top: 15px;
+    font-size: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+
+ol,ul{
+    padding-left: 0;
+}
+
+#input-button{
+    font-family: 'Overpass', sans-serif;
+    font-size: 110% !important;
+    color:#1b262c !important;
+    width: 100% !important;
+    height: 60px !important;
+    border: none !important;
+
+    background-color: #bbe1fa !important;
+    
+    margin-top: 10px !important;
+}

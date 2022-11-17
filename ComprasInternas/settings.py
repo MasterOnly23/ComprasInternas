@@ -165,6 +165,20 @@ AUTHENTICATION_BACKENDS = [
 
 ACCOUNT_LOGOUT_ON_GET = True
 
+# EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
+# EMAIL_FILE_PATH = BASE_DIR / "sent_emails"
+
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+
+
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'jfdaza@farmaciasdrahorro.com.ar'
+EMAIL_HOST_PASSWORD = 'sanjuan97'
+EMAIL_PORT = 587
+
 
 
 

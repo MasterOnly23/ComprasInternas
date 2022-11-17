@@ -1,12 +1,24 @@
-{% extends "account/base.html" %}
+{% extends 'layout.html' %}
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'css/provider-google.css' %}">
 
 {% load i18n %}
 
 {% block head_title %}{% trans "Verify Your E-mail Address" %}{% endblock %}
 
 {% block content %}
+<div id="contenedor">
+    <div id="central">
+        <div id="login">
     <h1>{% trans "Verify Your E-mail Address" %}</h1>
 
-    <p>{% blocktrans %}We have sent an e-mail to you for verification. Follow the link provided to finalize the signup process. If you do not see the verification e-mail in your main inbox, check your spam folder. Please contact us if you do not receive the verification e-mail within a few minutes.{% endblocktrans %}</p>
+    <p>Le hemos enviado un correo electrónico para su verificación. Siga el enlace proporcionado para finalizar el proceso de registro. Si no ve el correo electrónico de verificación en su bandeja de entrada principal, verifique su carpeta de correo no deseado. Póngase en contacto con nosotros si no recibe el correo electrónico de verificación en unos minutos.</p>
+
+</div>
+
+</div>
+</div>
+
 
 {% endblock %}
