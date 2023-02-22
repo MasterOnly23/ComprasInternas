@@ -1,0 +1,7 @@
+.helptext{
+    display: none;
+  }
+
+#id_password{
+    display: none !important;
+  }

@@ -1,0 +1,36 @@
+{% load static %}
+<link href="{% static 'css/bootstrap.css' %}" rel="stylesheet">
+<link href="{% static 'css/headers.css' %}" rel="stylesheet">
+
+
+<div class="alert alert-primary" style="background-color: rgba(128,128,128,0.08);" role="alert">
+
+<div class="d-flex justify-content-center align-items-center">Filtros</div>
+
+<div><a href="{% url 'listaPedidos' %}" class="btn btn-info mb-lg-3">Limpiar</a></div>
+
+<ul>
+    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Usuarios
+          </a>
+          <ul class="dropdown-menu">
+            {% for user in users %}
+            <li><a class="dropdown-item" href="{% url 'filtroUsuario' id_user=user.id %}">{{ user.first_name }} {{ user.last_name }}</a></li>
+            {% endfor %}
+          </ul>
+    </li>
+
+    <li class="nav-item dropdown pt-3">
+      <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          Fecha
+        </a>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" href="{% url 'filtroFecha' 'hoy' %}">Hoy</a></li>
+          <li><a class="dropdown-item" href="{% url 'filtroFecha' 'mes' %}">Ultimo Mes</a></li>
+        </ul>
+  </li>
+
+</ul>
+
+</div>

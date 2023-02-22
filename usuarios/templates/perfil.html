@@ -1,0 +1,59 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% load socialaccount %}
+{% providers_media_js %}
+
+<link rel="stylesheet" href="{% static 'css/provider-google.css' %}">
+
+
+
+{% block content %}
+{% if messages %}
+			<div class="notification {{ messages.tags }}" id="usuario">
+				<span>SI NO VE LOS CAMBIOS EFECTUADOS POR FAVOR RECARGUE LA PAGINA O HAGA CLICK </span><a href="javascript:location.reload()">AQUI</a>
+			</div>
+	  {% endif %}
+<link rel="stylesheet" href="{% static 'css/profile.css' %}">
+
+<div id="contenedor">
+    <div id="central">
+        <div id="login">
+
+            <div class="data" id="data">
+                <li class="nav-item dropdown" style="list-style: none;">
+                <a href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" class="dropdown-editar">EDITAR</a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="{% url 'editUser' %}">Editar Nombre y Apellido</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="{% url 'editArea' %}">Editar Area de Trabajo</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="{% url 'editLegajo' %}">Editar Legajo</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="{% url 'editPass' %}">Cambiar Contraseña</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="{% url 'socialaccount_connections' %}">Conectar con Google</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="{% url 'account_email' %}">Cambiar Email</a></li>
+                      </ul>
+                </li>
+
+                <br>
+                    <h2 class="label-data-title">Email: </h2><p class="label-data">{{ user.email }}</p>
+                    <h2 class="label-data-title">Nombre: </h2><p class="label-data">{{ user.first_name }}</p>
+                    <h2 class="label-data-title">Apellido: </h2><p class="label-data">{{ user.last_name }}</p>
+                    <h2 class="label-data-title">Legajo: </h2><p class="label-data">{{ user.legajo }}</p>  
+                    <h2 class="label-data-title">Area: </h2><p class="label-data">{{ user.area }}</p>   
+            </div> 
+            <br>
+                <div class="pie-google">
+                    <a href="{% url 'socialaccount_connections' %}"><img src="{% static 'img/google-logo.png' %}" alt="logo google" id="login-google">Conectar con Google</a>
+                </div>
+            
+
+
+
+        </div>
+
+    </div>
+    </div>
+    {% endblock %}

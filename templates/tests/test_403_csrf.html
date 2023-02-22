@@ -1,0 +1,16 @@
+{% extends 'layout.html' %}
+{% load socialaccount %}
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'css/provider-google.css' %}">
+
+<div id="contenedor">
+    <div id="central">
+        <div id="login">
+
+<a href="{% provider_login_url "google" next=next %}" class="nav-link">Sign In</a>
+
+</div>
+
+</div>
+</div>

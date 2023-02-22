@@ -1,0 +1,132 @@
+{% extends 'layout.html' %}
+{% load account %}
+{% load static %}
+
+
+{% block content %}
+<script src="{% static '/js/jquery.min.js' %}"></script>
+<link rel="stylesheet" href="{% static '/css/tablesorter.css' %}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.29.0/js/jquery.tablesorter.js" integrity="sha256-serXvhbeEKdQIfTFSD3wpNCGNx2+/9py7VXfwLhYTfk="
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.29.0/js/jquery.tablesorter.widgets.js" integrity="sha256-U+0DXO4scYcNVpt7pnud6Fx3KZqK2I5mI6KOeAjSqOE="
+        crossorigin="anonymous"></script>
+
+    <script> $(function(){
+            $('#Pedidos').tablesorter(); 
+          });
+    </script>
+
+
+<style>
+    .sort:hover{
+        cursor: pointer;
+      }
+</style>
+
+<div class="row main2" style="margin: 0 2.5rem;">
+  <div class="col-8">
+      <div class="row" style="padding: 10px 0;">
+          <div class="col-12">
+              <div class="row">
+                {% if msg %}
+                      <div class="alert alert-danger text-center">{{ msg }}</div>
+                  {% endif %}
+                  <!-- <button onClick="exportExcel('Pedidos', [0,6])">Exportar a Excel</button> -->
+
+                <table class="table table-striped tablesorter" id="Pedidos">
+                  <thead>
+                    <tr>
+                      <th scope="col" class="sort" style="visibility: hidden;"></th>
+                      <th scope="col" class="sort">Numero de Pedido <i class="fa-solid fa-sort"></i></th>
+                      <th scope="col" class="sort">Cliente</th>
+                      <th scope="col" class="sort">Legajo</th>
+                      <th scope="col" class="sort">Total</th>
+                      <th scope="col" class="sort">Fecha de Creacion</th>
+                      <th scope="col" class="sort" style="visibility: hidden;"></th>
+                    </tr>
+                  </thead>
+
+
+                  <tbody>
+                    {% for orden in ordenes %}
+
+                  <tr>
+                    <!-- <th scope="row" class="td-data"></th> -->
+                    <td class="dropdown"><li class="nav-item dropdown" style="margin-left: 1.3rem; list-style: none;">
+                      <a class="nav-link texto" href="{% url 'pedidosOrden' orden.id %}">
+                        <img src="{% static 'img/ojo.png' %}" alt="Ver Productos">
+                      </a>
+                    </li></td>
+                    <td>{{ orden.id  }}</td>
+                    <td>{{ orden.usuario }}</td>
+                    <td>{{ orden.legajo }}</td>
+                    <td>$ {{ orden.totalCarrito|floatformat:2 }}</td>
+                    <td>{{ orden.fecha_creacion }}</td>
+                    {% if orden.estado != 'Cancelado' and orden.estado != 'Entregado' %}
+                    <td><a href="{% url 'cancelarPedido' orden.id %}" class="btn btn-danger">Cancelar Pedido</a></td>
+                    {% else %}
+                    <td {% if orden.estado == 'Entregado' %} class="text-success" {% else %} class="text-danger" {% endif %}>{{ orden.estado|upper }}</td>
+                    {% endif %}
+                    <!-- agregamos un mensaje para que el usuario sepa que el objeto se elimino -->
+                    
+                  </tr>
+                    {% endfor %}
+                </tbody>
+                </table>
+              </div>
+          </div>
+      </div>
+  </div>
+
+
+
+  <div class="col-3" style="margin-left: 4.5rem;">
+    <div class="alert alert-primary" style="background-color: rgba(128,128,128,0.08);" role="alert">
+
+      <div class="d-flex justify-content-center align-items-center">Filtros</div>
+      
+      <div><a href="{% url 'misPedidos' %}" class="btn btn-info mb-lg-3">Limpiar</a></div>
+      
+      <ul>
+          <li class="nav-item dropdown pt-3">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Fecha
+              </a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="{% url 'filtroFecha' 'hoy' %}">Hoy</a></li>
+                <li><a class="dropdown-item" href="{% url 'filtroFecha' 'semana' %}">Ultimos 7 dias</a></li>
+                <li><a class="dropdown-item" href="{% url 'filtroFecha' 'mes' %}">Este Mes</a></li>
+                <li><a class="dropdown-item" href="{% url 'filtroFecha' 'año' %}">Este año</a></li>
+              </ul>
+        </li>
+
+        <li class="nav-item dropdown pt-3">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Estado
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="{% url 'filtroEstado' 'Entregado' %}">Entregado</a></li>
+              <li><a class="dropdown-item" href="{% url 'filtroEstado' 'Pendiente' %}">Pendiente</a></li>
+              <li><a class="dropdown-item" href="{% url 'filtroEstado' 'Cancelado' %}">Cancelado</a></li>
+            </ul>
+      </li>
+      
+      </ul>
+      
+      </div>
+  </div>
+</div>
+
+<div class="paginador">
+  {% include 'paginator.html' %}
+</div>
+
+
+    <script src="{% static '/js/sortTable.js' %}"></script>
+    <script src="{% static '/js/sortDate.js' %}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.15.2/xlsx.full.min.js"></script>
+    <script src="{% static '/js/export.js' %}"></script>
+
+
+
+{% endblock %}

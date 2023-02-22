@@ -1,0 +1,19 @@
+.title-proveedor{
+    display: flex;
+    justify-content: center;
+}
+
+.titulo{
+        color: black;
+        margin-top: 5rem;
+        /* margin-bottom: 0.5rem; */
+        font-weight: 500;
+        line-height: 1.2;
+}
+
+.proveedor{
+    font-size: 2rem;  
+}
+
+
+

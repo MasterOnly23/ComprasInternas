@@ -1,0 +1,43 @@
+.label-data-title{
+    text-decoration: underline !important;
+    margin-bottom: 1rem;
+}
+
+.label-data{
+    font-size: 1.3rem;
+    margin-left: 0.8rem;
+}
+
+.dropdown-menu{
+    background-color: #bbe1fa ;
+}
+
+.dropdown-editar{
+    border: 2px solid;
+    padding: 0.7rem;
+    border-radius: 40%;
+
+}
+
+.dropdown{
+    display: flex;
+    justify-content: end;
+}
+
+.pie-google{
+    font-size: 90%;
+    text-align: center;    
+    margin-top: 15px;
+    justify-content: center;
+    background-color: #bbe1fa;
+}
+
+.pie-google a{
+    color: black;
+    font-size: 115%;
+    text-decoration: none;
+}
+
+.pie-google:hover{
+    background-color: #0f4c75;
+}

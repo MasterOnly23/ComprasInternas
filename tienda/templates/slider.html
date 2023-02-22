@@ -1,0 +1,121 @@
+{% load static %}
+
+<link href="{% static 'js/bootstrap.bundle.js' %}" rel="stylesheet">
+
+<div class="mt-5">
+<h2 class="title text-center" style="color: #0f4c75;">TUS PRODUCTOS DESTACADOS</h2>
+</div>
+
+
+
+
+<div class="col-8" style="margin-left: 19%;">
+  <div id="carouselExampleAutoplaying" class="carousel carousel-dark slide" data-bs-ride="carousel">
+    <div class="carousel-inner">
+      {% if destacados1|length != 0 %}
+      <div class="carousel-item active">
+        <div class="row row-4 row-cols-1 row-cols-md-2 g-1" style="margin: 1.5rem 5rem; ">
+            {% for destacado in destacados1 %}
+            <div class="col" style="
+            align-items: center;
+            display: flex;
+            justify-content: center;">
+              <div class="card h-100 w-50">
+                <div class="card-body">
+                  <h5 class="card-title text-center">{{ destacado.producto.descProducto }}</h5>
+                  <p class="card-text text-center">{{ destacado.producto.producto }}</p>
+                  <p class="card-text d-flex justify-content-center">$ {{destacado.producto.precio|floatformat:2}}</p>
+                    {% if destacado.producto.stockProducto != 0 %}
+                    <div class="d-flex justify-content-center align-items-center">
+                        <a href="{% url 'add' destacado.producto.id %}" class="btn btn-md btn-outline-success">Agregar al carrito</a>
+                    </div>
+                    {% else %}
+                        <div class="d-flex justify-content-center align-items-center">
+                            <div class="d-flex justify-content-center align-items-center alert alert-danger text-center " >
+                                <p style="width: 8rem; height: 0.2rem;">Sin Stock</p>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+      </div>
+      {% endif %}
+      {% if destacados2|length != 0 %}
+      <div class="carousel-item">
+        <div class="row row-cols-1 row-cols-md-2 g-2" style="margin: 1.5rem 5rem;">
+            {% for destacado in destacados2 %}
+            <div class="col" style="align-items: center;
+            display: flex;
+            justify-content: center;">
+              <div class="card h-100 w-50">
+                <div class="card-body">
+                  <h5 class="card-title text-center">{{ destacado.producto.descProducto }}</h5>
+                  <p class="card-text text-center">{{ destacado.producto.producto }}</p>
+                  <p class="card-text d-flex justify-content-center">$ {{destacado.producto.precio|floatformat:2}}</p>
+                    {% if destacado.producto.stockProducto != 0 %}
+                    <div class="d-flex justify-content-center align-items-center">
+                        <a href="{% url 'add' destacado.producto.id %}" class="btn btn-md btn-outline-success">Agregar al carrito</a>
+                    </div>
+                    {% else %}
+                        <div class="d-flex justify-content-center align-items-center">
+                            <div class="d-flex justify-content-center align-items-center alert alert-danger text-center " >
+                                <p style="width: 8rem; height: 0.2rem;">Sin Stock</p>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+      </div>
+      {% endif %}
+      {% if destacados3|length != 0 %}
+      <div class="carousel-item">
+        <div class="row row-cols-1 row-cols-md-2 g-2" style="margin: 1.5rem 5rem; ">
+            {% for destacado in destacados3 %}
+            
+            <div class="col" style="align-items: center;
+            display: flex;
+            justify-content: center;">
+              <div class="card h-100 w-50">
+                <div class="card-body">
+                  <h5 class="card-title text-center">{{ destacado.producto.descProducto }}</h5>
+                  <p class="card-text text-center">{{ destacado.producto.producto }}</p>
+                  <p class="card-text d-flex justify-content-center">$ {{destacado.producto.precio|floatformat:2}}</p>
+                    {% if destacado.producto.stockProducto != 0 %}
+                    <div class="d-flex justify-content-center align-items-center">
+                        <a href="{% url 'add' destacado.producto.id %}" class="btn btn-md btn-outline-success">Agregar al carrito</a>
+                    </div>
+                    {% else %}
+                        <div class="d-flex justify-content-center align-items-center">
+                            <div class="d-flex justify-content-center align-items-center alert alert-danger text-center " >
+                                <p style="width: 8rem; height: 0.2rem;">Sin Stock</p>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+              </div>
+            </div>
+            
+            {% endfor %}
+          </div>
+      </div>
+      {% endif %}
+    </div>
+    <button class="carousel-control-prev"  type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon"  aria-hidden="true"></span>
+      <span class="">Previous</span>
+    </button>
+    <button class="carousel-control-next"  type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
+      <span class="carousel-control-next-icon"  aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+
+  
+</div>
+ 

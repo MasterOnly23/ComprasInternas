@@ -1,0 +1,63 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% load socialaccount %}
+{% providers_media_js %}
+
+<link rel="stylesheet" href="{% static 'css/provider-google.css' %}">
+
+{% block content %}
+
+{% if msg == 'No data'%}
+
+                    <div class="alert alert-danger" role="alert">
+                    <h3>Sin Resultados</h3>
+                    </div>
+
+        {% endif %}
+
+<div class="row main2" style="margin-left: 2rem; margin-right: 1rem; margin-top: 6rem;">
+    <div class="col-8" >
+        <div class="row" style="padding: 10px 0;">
+            <div class="col-12">
+                <div class="row">
+                    {% for producto in articulo %}
+                    <div class="col-4">
+                        <div class="card shadow-sm" style="margin-bottom: 1.5rem;">
+                          <img src="{{producto.imagen.url}}" width="200px" height="200px" style="margin: auto;">
+                            <div class="card-body">
+                                <h5 class="card-title d-flex justify-content-center">{{producto.descProducto}}</h5>
+                                <p class="card-text d-flex justify-content-center">{{producto.producto}}</p>
+                                <p class="card-text d-flex justify-content-center">$ {{producto.precio|floatformat:2}}</p>
+                                {% if producto.stockProducto != 0 %}
+                                <div class="d-flex justify-content-center align-items-center">
+                                <a href="{% url 'add' producto.id %}" class="btn btn-md btn-outline-success">Agregar al carrito</a>
+                              </div>
+                              {% else %}
+                              <div class="d-flex justify-content-center align-items-center">
+                              <div class="d-flex justify-content-center align-items-center alert alert-danger text-center " >
+                                <p style="width: 8rem; height: 0.2rem;">Sin Stock</p>
+                              </div>
+                            </div>
+                              {% endif %}
+                              </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% if not articulo %}
+      <tr>
+        <td colspan="4">
+            <div class="alert alert-danger text-center">Sin Coincidencias</div>
+        </td>
+    </tr>
+    {% endif %}
+    </div>
+    <div class="col-4">
+        {% include "carrito.html" %}
+    </div>
+  </div>
+  </div>
+
+{% endblock %}

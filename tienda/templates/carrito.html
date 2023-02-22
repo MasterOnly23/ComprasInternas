@@ -1,0 +1,105 @@
+<style>
+    .btn-pedido:hover{
+        background-color: rgba(128,128,128,0.8);
+    }
+</style>
+
+
+
+<div class="alert alert-primary" style="background-color: rgba(128,128,128,0.08);" role="alert">
+            
+            <table class="table table-bordered">
+
+                <thead>
+                    <tr>
+                        <th scope="row" colspan="5" class="text-center">CARRITO</th>
+                    </tr>
+                    <tr>
+                        <th scope="col">NOMBRE</th>
+                        <th scope="col">PRECIO UNITARIO</th>
+                        <th scope="col">CANTIDAD</th>
+                        <th scope="col">PRECIO CON DESCUENTO</th>
+                        <th></th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                {% if request.session.carrito.items %}
+                {% for key, value in request.session.carrito.items %}
+                    <tr>
+                        <td>{{value.nombre}}</td>
+                        <td>{{value.precio|floatformat:2}}</td>
+                        <td>{{value.cantidad}}</td>
+                        <td>{{value.acumulado|floatformat:2}} </td>
+                        <td class="d-flex justify-content-center align-items-center">
+                            <a href="{% url 'restar' value.producto_id %}" class="badge btn btn-dark badge-dark" style="margin-right: 4px; background-color: #0f4c75;">-1</a>
+                            <a href="{% url 'add' value.producto_id %}" class="badge btn btn-dark badge-dark" style="background-color: #0f4c75;">+1</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    {% else %}
+
+                    <tr>
+                        <td colspan="4">
+                            <div class="alert alert-danger text-center">Sin Productos</div>
+                        </td>
+                    </tr>
+                    {% endif %}
+                    {% if request.session.carrito.items %}
+                <tr>
+                    <th scope="row">Total:</th>
+                    <td colspan="2">$ {{total_carrito|floatformat:2}}</td>
+                </tr>
+                {% endif %}
+            </tbody>
+            <hr>
+        </table>
+        <div class="row text-center d-flex justify-content-center">
+            <div class="col-2"><a href="{% url 'limpiar' %}" class="btn btn-danger" id="limpiar">Limpiar</a></div>
+            {% if legajo != 'None' %}    
+                
+                    {% if request.user.is_authenticated %}
+                        <div class="col-5"><a href="{% url 'enviar_pedido' %}" class="btn btn-success" id="link" >Realizar Pedido</a></div>
+                        {% else %} 
+                            <div class="col-5"><a href="{% url 'account_login' %}" class="btn btn-success">Realizar Pedido</a></div>             
+                        {% endif %}
+                    {% if fecha_hoy != 4 %} 
+                <div class="alert alert-warning text-center" style="margin-top: 5px;">Los pedidos solo se entregaran el dia Jueves</div>
+                {% endif %}
+            {% else %}
+            <div class="col-5"><button class="btn btn-success btn-pedido" disabled> Realizar Pedido</button></div>
+            <div class="alert alert-warning text-center" style="margin-top: 5px;">Para poder realizar su pedido debe ingresar su numero de legajo haciendo click <a href="{% url 'editLegajo' %}">AQUI</a></div>
+            
+            {% endif %}
+        </div>
+            </div>
+            
+
+
+
+
+
+            <script>
+            var link = document.getElementById("link");
+            var limpiar = document.getElementById("limpiar");
+            link.addEventListener("click", function(event) {
+                event.preventDefault();
+                var button = document.createElement("button");
+                button.innerHTML = "Cargando...";
+                limpiar.style.display = "none";
+                button.disabled = true;
+                link.parentNode.replaceChild(button, link);
+                setTimeout(function(){
+                    window.location = link.href;
+                },3000);
+            });
+            </script>
+
+
+            
+
+
+
+
+

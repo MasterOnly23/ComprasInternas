@@ -1,0 +1,132 @@
+{% extends 'layout.html' %}
+{% load account %}
+{% load static %}
+
+
+{% block content %}
+<script src="{% static '/js/jquery.min.js' %}"></script>
+<link rel="stylesheet" href="{% static '/css/tablesorter.css' %}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.29.0/js/jquery.tablesorter.js" integrity="sha256-serXvhbeEKdQIfTFSD3wpNCGNx2+/9py7VXfwLhYTfk="
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.29.0/js/jquery.tablesorter.widgets.js" integrity="sha256-U+0DXO4scYcNVpt7pnud6Fx3KZqK2I5mI6KOeAjSqOE="
+        crossorigin="anonymous"></script>
+
+    <script> $(function(){
+            $('#Pedidos').tablesorter(); 
+          });
+    </script>
+
+
+<style>
+    .sort:hover{
+        cursor: pointer;
+      }
+    .volver{
+        color: #0f4c75 !important;
+        text-decoration: none;
+        padding-left: 10rem;
+        font-size: 150%;
+    }
+    .volver:hover{
+        color: #be1447 !important;
+    }
+    .cajita-volver{
+        display: flex;
+    }
+</style>
+
+<div class="cajita-volver">
+<a href="{% url 'misPedidos' %}" class="volver"> << Volver </a>
+</div>
+
+<div class="row main2" style="margin: 0 10rem;">
+  <div class="col-12">
+      <div class="row" style="padding: 10px 0;">
+          <div class="col-12">
+              <div class="row">
+                {% if msg %}
+                      <div class="alert alert-danger text-center">{{ msg }}</div>
+                  {% endif %}
+                <table class="table table-striped tablesorter" id="Pedidos">
+                  <thead>
+                    <tr>
+                      <!-- <th scope="col" class="sort">Numero de Pedido <i class="fa-solid fa-sort"></i></th> -->
+                      <th scope="col" class="sort">Codigo de Producto</th>
+                      <th scope="col" class="sort">Producto</th>
+                      <th scope="col" class="sort">Precio Unitario</th>
+                      <th scope="col" class="sort">Cantidad</th>
+
+                    </tr>
+                  </thead>
+
+
+                  <tbody>
+                    {% for pedido in pedidos %}
+
+                  <tr>
+                    <!-- <th scope="row" class="td-data"></th> -->
+                    <!-- <td>{{ pedido.nroPedido_id  }}</td> -->
+                    <td>{{ pedido.codProducto }}</td>
+                    <td>{{ pedido.nombre }}</td>
+                    <td>$ {{ pedido.precio }}</td>
+                    <td>{{ pedido.cantidad }}</td>
+
+                    <!-- agregamos un mensaje para que el usuario sepa que el objeto se elimino -->
+                    
+                  </tr>
+                    {% endfor %}
+                </tbody>
+                </table>
+              </div>
+          </div>
+      </div>
+  </div>
+
+
+
+  <!-- <div class="col-3" style="margin-left: 4.5rem;">
+    <div class="alert alert-primary" style="background-color: rgba(128,128,128,0.08);" role="alert">
+
+      <div class="d-flex justify-content-center align-items-center">Filtros</div>
+      
+      <div><a href="{% url 'misPedidos' %}" class="btn btn-info mb-lg-3">Limpiar</a></div>
+      
+      <ul>
+          <li class="nav-item dropdown pt-3">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Fecha
+              </a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="{% url 'filtroFecha' 'hoy' %}">Hoy</a></li>
+                <li><a class="dropdown-item" href="{% url 'filtroFecha' 'semana' %}">Ultimos 7 dias</a></li>
+                <li><a class="dropdown-item" href="{% url 'filtroFecha' 'mes' %}">Este Mes</a></li>
+                <li><a class="dropdown-item" href="{% url 'filtroFecha' 'año' %}">Este año</a></li>
+              </ul>
+        </li>
+
+        <li class="nav-item dropdown pt-3">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Estado
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="{% url 'filtroEstado' 'Entregado' %}">Entregado</a></li>
+              <li><a class="dropdown-item" href="{% url 'filtroEstado' 'Pendiente' %}">Pendiente</a></li>
+              <li><a class="dropdown-item" href="{% url 'filtroEstado' 'Cancelado' %}">Cancelado</a></li>
+            </ul>
+      </li>
+      
+      </ul>
+      
+      </div>
+  </div>
+</div> -->
+
+<div class="paginador">
+  {% include 'paginator.html' %}
+</div>
+
+
+    <script src="{% static '/js/sortTable.js' %}"></script>
+    <script src="{% static '/js/sortDate.js' %}"></script>
+
+{% endblock %}

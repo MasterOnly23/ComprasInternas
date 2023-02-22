@@ -1,0 +1,8 @@
+.title-proveedor{
+    display: flex;
+    justify-content: center;
+}
+
+.proveedor{
+    margin-bottom: 2rem !important;
+}

@@ -1,0 +1,23 @@
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Subject: 
+ =?utf-8?q?=5Blocalhost=3A8000=5D_Correo_electr=C3=B3nico_para_restablecer_co?=
+ =?utf-8?q?ntrase=C3=B1a?=
+From: webmaster@localhost
+To: pipedaza23@gmail.com
+Date: Wed, 16 Nov 2022 18:42:34 -0000
+Message-ID: <166862415419.6572.6824898009567702873@SYST3M4.FENIX-ARG.LOCAL>
+
+Hello from localhost:8000!
+
+You're receiving this e-mail because you or someone else has requested a password for your user account.
+It can be safely ignored if you did not request a password reset. Click the link below to reset your password.
+
+http://127.0.0.1:8000/accounts/password/reset/key/6-beznmy-3bd72b14e202d0d7211c9fa09356c21a/
+
+En caso de haberlo olvidado, su usuario es pipe.
+
+¡Gracias por usar localhost:8000!
+localhost:8000
+-------------------------------------------------------------------------------

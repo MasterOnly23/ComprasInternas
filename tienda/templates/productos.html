@@ -1,0 +1,86 @@
+{% extends 'layout.html' %}
+{% load account %}
+{% load static %}
+
+
+
+{% block content %}
+
+
+<style>
+  .main2{
+    margin: 0 2.5rem;
+  }
+</style>
+
+<!-- {% user_display user as name %}
+
+<h1 id="usuario">{{ name|upper }}</h1>
+
+<script>
+  let name = document.getElementById("usuario");
+  let name_sep = name.innerHTML.split("_").join(" ")
+  name.innerHTML = name_sep
+</script> -->
+
+
+{% if request.user.is_authenticated %}
+  {% if destacados|length != 0 %}
+    {% include "slider.html" %}
+  {% endif %}
+{% endif %}
+
+
+
+<div class="overlay">
+</div>
+{% if area == 'None' %}
+<div class="notification-email bg-warning {{ messages.tags }}">
+  <p class="text-dark notification-email-text">Aun no ha ingresado su area de trabajo, hágalo haciendo click <span><a href="{% url 'editArea' %}" class="notification-email-link">aquí</a></span></p>
+</div>
+{% endif %}
+
+<div class="row main2">
+  <div class="col-8">
+      <div class="row" style="padding: 10px 0;">
+          <div class="col-12">
+              <div class="row">
+                  {% for producto in productos %}
+                  <div class="col-4">
+                      <div class="card shadow-sm" style="margin-bottom: 1.5rem;">
+                        <img src="{{producto.imagen.url}}" width="200px" height="200px" style="margin: auto;">
+                          <div class="card-body">
+                              <h5 class="card-title d-flex justify-content-center">{{producto.descProducto}}</h5>
+                              <p class="card-text d-flex justify-content-center">{{producto.producto}}</p>
+                              <p class="card-text d-flex justify-content-center">$ {{producto.precio|floatformat:2}}</p>
+                              {% if producto.stockProducto != 0 %}
+                              <div class="d-flex justify-content-center align-items-center">
+                              <a href="{% url 'add' producto.id %}" class="btn btn-md btn-outline-success">Agregar al carrito</a>
+                            </div>
+                            {% else %}
+                            <div class="d-flex justify-content-center align-items-center">
+                            <div class="d-flex justify-content-center align-items-center alert alert-danger text-center " >
+                              <p style="width: 8rem; height: 0.2rem;">Sin Stock</p>
+                            </div>
+                          </div>
+                            {% endif %}
+                            </div>
+                      </div>
+                  </div>
+                  {% endfor %}
+              </div>
+          </div>
+      </div>
+  </div>
+  <div class="col-4">
+      {% include "carrito.html" %}
+  </div>
+</div>
+</div>
+
+<div class="paginador">
+  {% include 'paginator.html' %}
+</div>
+
+
+{% endblock %}

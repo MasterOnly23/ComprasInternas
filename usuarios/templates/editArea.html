@@ -1,0 +1,31 @@
+{% extends 'layout.html' %}
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'css/provider-google.css' %}">
+
+{% load i18n %}
+{% load account socialaccount %}
+
+{% block content %}
+<div id="contenedor">
+    <div id="central">
+        <div id="login">
+            <div class="titulo">
+                <h1>Area de Trabajo</h1> 
+              </div>
+
+              <form class="form" method="POST"> {% csrf_token %}
+
+                {{ form.as_p }}
+                <button type="submit" id="submit" >Guardar</button>
+            
+            </form>
+
+
+            </div>
+
+        </div>
+        </div>
+
+        
+{% endblock %}

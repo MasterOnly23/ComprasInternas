@@ -1,0 +1,95 @@
+.container-provider{
+
+    font-family: 'Overpass', sans-serif;
+    font-size: 110%;
+    color:#1b262c;
+    width: 100%;
+    height: 70px;
+    border: none;
+    
+        
+    border-radius: 3px 3px 3px 3px;
+    -moz-border-radius: 3px 3px 3px 3px;
+    -webkit-border-radius: 3px 3px 3px 3px;
+    
+    background-color: #bbe1fa;
+    
+    margin-top: 20px;
+}
+
+.list-provider{
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-right: 20px;
+}
+
+.google-link{
+    text-decoration: none;
+    color: #1b262c;
+}
+
+#id_remember{
+    display: flex;
+    justify-content: start;
+    align-items: start;
+    width: 35px;
+    cursor: pointer;
+
+}
+
+/* p{
+    display: flex;
+} */
+
+.button{
+    color: #bbe1fa !important;
+}
+
+.button:hover{
+    color: #0f4c75 !important;
+}
+
+.container-provider:hover{
+    background-color: #0f4c75;
+}
+
+.registrarse{
+    margin-top: 15px;
+    font-size: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+
+ol,ul{
+    padding-left: 0;
+}
+
+#input-button{
+    font-family: 'Overpass', sans-serif;
+    font-size: 110% !important;
+    color:#1b262c !important;
+    width: 100% !important;
+    height: 60px !important;
+    border: none !important;
+
+    background-color: #bbe1fa !important;
+    
+    margin-top: 10px !important;
+}
+
+select #id_area{
+    height: 2rem;
+}
+
+.signup{
+    padding-right: 2rem;
+}
+
+.primary .verified .unverified{
+    font-weight: bold;
+    font-size: 20px;
+}
+

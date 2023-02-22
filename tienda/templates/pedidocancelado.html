@@ -1,0 +1,40 @@
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
+
+
+<div class="alert alert-secondary col-10 text-center" style="background-color: rgba(128,128,128,0.08);" role="alert">
+      
+    <h1>Orden de Compra Cancelada</h1>
+    <ul>
+        <li>{{ user.first_name|upper }} {{ user.last_name|upper }}</li>
+        <li>Legajo: {{ user.legajo }}</li>
+        <li>Area: {{ user.area }}</li>
+    </ul>
+
+    <table class="table table-striped tablesorter" style="background-color: rgba(128,128,128,0.08); border: 1px solid black;" id="Pedidos">
+        <thead>
+          <tr>
+            <th scope="col" class="sort" style="border: 1px solid black; border-top: 0;">Numero de Pedido <i class="fa-solid fa-sort"></i></th>
+            <th scope="col" class="sort" style="border: 1px solid black; border-top: 0;">Cliente</th>
+            <th scope="col" class="sort" style="border: 1px solid black; border-top: 0;">Legajo</th>
+            <th scope="col" class="sort" style="border: 1px solid black; border-top: 0;">Total</th>
+            <th scope="col" class="sort" style="border: 1px solid black; border-top: 0;">Fecha de Creacion</th>
+            <th scope="col" class="sort" style="visibility: hidden;"></th>
+          </tr>
+        </thead>
+
+
+        <tbody>
+
+        <tr>
+          <!-- <th scope="row" class="td-data"></th> -->
+          <td style="border: 1px solid black; border-top: 0;">{{ orden.id  }}</td>
+          <td style="border: 1px solid black; border-top: 0;">{{ orden.usuario }}</td>
+          <td style="border: 1px solid black; border-top: 0;">{{ orden.legajo }}</td>
+          <td style="border: 1px solid black; border-top: 0;">$ {{ orden.totalCarrito }}</td>
+          <td style="border: 1px solid black; border-top: 0;">{{ orden.fecha_creacion }}</td>
+
+          <!-- agregamos un mensaje para que el usuario sepa que el objeto se elimino -->
+          
+        </tr>
+      </tbody>
+      </table>

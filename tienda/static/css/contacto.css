@@ -1,0 +1,17 @@
+.borrar{
+    background-color: gray !important;
+}
+
+.borrar:hover{
+    background-color: #0f4c75 !important;
+}
+
+textarea{
+    min-height: 80px !important;
+}
+
+#id_archivos{
+    background-color: #bbe1fa;
+    padding-bottom: 3rem !important;
+    padding-top: 0.6rem !important;
+}

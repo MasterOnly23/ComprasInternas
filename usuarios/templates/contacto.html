@@ -1,0 +1,148 @@
+{% extends 'layout.html' %}
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'css/provider-google.css' %}">
+
+{% load i18n %}
+{% load account socialaccount %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/contacto.css' %}">
+<div id="contenedor">
+    <div id="central">
+        <div id="login">
+            <div class="titulo">
+                <h1>Formulario de Contacto</h1> 
+              </div>
+
+              <form class="form" method="POST" action="https://formspree.io/f/xyyvapdp"> {% csrf_token %}
+
+                <form action="https://formspree.io/f/mnqrgwrn" method="POST">				
+    
+                    {% if request.user.is_authenticated %}      
+                    <p>
+                        <label for="nombre" class="colocar_nombre" hidden>Nombre
+                            <span class="obligatorio">*</span>
+                        </label>
+                            <input type="text" name="introducir_nombre" id="nombre" hidden required="obligatorio" value="{{ request.user.first_name }} {{ request.user.last_name }}" >
+                    </p>
+                
+                    <p>
+                        <label for="email" class="colocar_email" hidden>Email
+                            <span class="obligatorio">*</span>
+                        </label>
+                            <input type="email" name="introducir_email" id="email" hidden required="obligatorio" value="{{ request.user.email }}" >
+                    </p>
+
+                    <p>
+                        <label for="email" class="colocar_email" hidden>Area
+                            <span class="obligatorio">*</span>
+                        </label>
+                        <select id="simple" name="simple" hidden>
+                            <option selected>{{ request.user.area }}</option>
+                          </select>
+                    </p>
+
+            
+                
+                    <p>
+                        <label for="asunto" class="colocar_asunto">Asunto
+                            <span class="obligatorio">*</span>
+                        </label>
+                            <input type="text" name="introducir_asunto" id="assunto" required="obligatorio" placeholder="Asunto">
+                    </p>		
+                
+                    <p>
+                        <label for="mensaje" class="colocar_mensaje">Mensaje
+                            <span class="obligatorio">*</span>
+                        </label>                     
+                             <textarea name="introducir_mensaje" class="texto_mensaje" id="mensaje" required="obligatorio" placeholder=" Mensaje..." rows="80" cols="48"></textarea> 
+                       </p>	  								
+                
+                       <button type="submit" id="submit" >Enviar</button>
+                       <button type="reset" id="submit" class="borrar" onclick='myFunction()' >Borrar</button>
+                    <br>
+                    <br>
+                    <p class="aviso">
+                        <span class="obligatorio"> * </span>Campos Requeridos
+                    </p>
+                    
+                    {% else %}
+
+                    <p>
+                        <label for="nombre" class="colocar_nombre" >Nombre
+                            <span class="obligatorio">*</span>
+                        </label>
+                            <input type="text" name="introducir_nombre" id="nombre" required="obligatorio">
+                    </p>
+                
+
+                    <p>
+                        <label for="email" class="colocar_email">Email
+                            <span class="obligatorio">*</span>
+                        </label>
+                            <input type="email" name="introducir_email" id="email">
+                    </p>
+
+
+                    <p>
+                        <label for="email" class="colocar_email" >Area
+                            <span class="obligatorio">*</span>
+                        </label>
+                        <select id="simple" name="simple">
+                            <option>------------------</option>
+                            <option>Administracion</option>
+                            <option >Sistemas</option>
+                            <option>RRHH</option>
+                            <option>Abastecimiento</option>
+                            <option>Mantenimiento</option>
+                            <option>Gerentes</option>
+                            <option>Compras</option>
+                            <option>Legales</option>
+                            <option>Otra</option>
+                          </select>
+                    </p>
+
+                
+                    <p>
+                        <label for="asunto" class="colocar_asunto">Asunto
+                            <span class="obligatorio">*</span>
+                        </label>
+                            <input type="text" name="introducir_asunto" id="assunto" required="obligatorio" placeholder="Asunto">
+                    </p>		
+                
+                    <p>
+                        <label for="mensaje" class="colocar_mensaje">Mensaje
+                            <span class="obligatorio">*</span>
+                        </label>                     
+                             <textarea name="introducir_mensaje" class="texto_mensaje" id="mensaje" required="obligatorio" placeholder=" Mensaje..." rows="80" cols="48"></textarea> 
+                       </p>	  								
+                
+                       <button type="submit" id="submit" >Enviar</button>
+                       <button type="reset" id="submit" class="borrar" onclick='myFunction()' >Borrar</button>
+                    <br>
+                    <br>
+                    <p class="aviso">
+                        <span class="obligatorio"> * </span>Campos Requeridos
+                    </p>
+
+                    {% endif %}
+            
+        </form>
+
+                
+            
+            </form>
+
+
+            </div>
+
+        </div>
+        </div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<script src="{% static 'js/borrarform.js' %}"></script>
+
+        
+{% endblock %}
