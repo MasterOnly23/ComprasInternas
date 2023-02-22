@@ -110,7 +110,7 @@ WSGI_APPLICATION = 'ComprasInternas.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'mssql',
-        'NAME': 'ComprasInternas',
+        'NAME': 'ComprasInternasPrueba',
         'USER': 'sa',
         'PASSWORD': 'SA2005',
         'HOST': 'srvsql03',

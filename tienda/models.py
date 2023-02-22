@@ -170,3 +170,9 @@ class ProductosDestacados(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, unique=None)
     producto = models.ForeignKey(TiendaProductos, on_delete=models.CASCADE, blank=True, null=True)
     acumulador = models.IntegerField(default=0)
+
+
+    class Meta:
+        managed = False
+        db_table = 'tienda_productosdestacados'
+        
