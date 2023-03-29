@@ -1,5 +1,11 @@
 from django.contrib import admin
 from tienda.models import *
+from tienda.filter import FechaListFilter
+from django.contrib.admin.widgets import AdminDateWidget
+
+from rangefilter.filter import DateRangeFilter, DateTimeRangeFilter
+
+
 # Register your models here.
 
 
@@ -12,6 +18,7 @@ class BuscarAdminProducto(admin.ModelAdmin):
     list_filter = ['categoria']
     list_display_links = ['codProducto', 'categoria', 'descProducto', 'producto']
     list_per_page = 30
+  
 
 class BuscarAdminPedido(admin.ModelAdmin):
     
@@ -36,17 +43,43 @@ class BuscarAdminPedido(admin.ModelAdmin):
     relacion_orden.short_description = 'Numero Orden'
 
 
+class BuscarAdminPedidoCancelado(admin.ModelAdmin):
+    
+    # con esto muestras los campos que deses al mostrar la lista en admin
+    list_display=['relacion_orden',  'codProducto', 'nombre', 'cantidad', 'acumulado']
+    # # con esto añades un campo de texto que te permite realizar la busqueda, puedes añadir mas de un atributo por el cual se filtrará
+    search_fields = [ 'nombre', 'nroPedido_id', 'codProducto', 'producto_id']
+    # # con esto añadiras una lista desplegable con la que podras filtrar (activo es un atributo booleano)
+    list_filter = ['nroPedido_id']
+    # #ordering = ['para ordenar']
+    # # list_editable = ['estado']
+    list_display_links = ['relacion_orden','codProducto', 'nombre']
+    list_per_page = 15 #(crea paginacion custom)
+    #exclude(se listan pero no se pueden modificar)
+    autocomplete_lookup_fields = {
+        'nombre': ['nombre'],
+        }
+
+
+    def relacion_orden(self, obj):
+        return obj.nroPedido.id
+    relacion_orden.short_description = 'Numero Orden'
+
+
+
 class BuscarAdminOrden(admin.ModelAdmin):
     # con esto muestras los campos que deses al mostrar la lista en admin
     list_display=['id',  'usuario', 'legajo', 'totalCarrito', 'fecha_creacion', 'estado']
     # con esto añades un campo de texto que te permite realizar la busqueda, puedes añadir mas de un atributo por el cual se filtrará
     search_fields = [ 'usuario', 'id', 'legajo', 'estado']
     # con esto añadiras una lista desplegable con la que podras filtrar (activo es un atributo booleano)
-    list_filter = ['usuario', 'fecha_creacion', 'estado', 'legajo']
+    list_filter = ['usuario','fecha_creacion', ('fecha_creacion', DateRangeFilter), 'estado', 'legajo']
     #ordering = ['para ordenar']
     list_editable = ['estado']
     list_display_links = ['id', 'usuario', 'legajo']
     list_per_page = 15 #(crea paginacion custom)
+
+
 
 
 
@@ -62,11 +95,14 @@ class AdminDestacados(admin.ModelAdmin):
     list_display_links = ['user', 'producto_id', 'acumulador']
     list_per_page = 15 #(crea paginacion custom)
 
+    
+
 
 
 
 admin.site.register(TiendaProductos, BuscarAdminProducto)
 admin.site.register(Pedido, BuscarAdminPedido)
+admin.site.register(PedidoCancelado, BuscarAdminPedidoCancelado)
 admin.site.register(Orden, BuscarAdminOrden)
 admin.site.register(ProductosDestacados, AdminDestacados)
 

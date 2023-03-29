@@ -63,7 +63,7 @@
                     <td>$ {{ orden.totalCarrito|floatformat:2 }}</td>
                     <td>{{ orden.fecha_creacion }}</td>
                     {% if orden.estado != 'Cancelado' and orden.estado != 'Entregado' %}
-                    <td><a href="{% url 'cancelarPedido' orden.id %}" class="btn btn-danger">Cancelar Pedido</a></td>
+                    <td><a href="{% url 'cancelarPedido' orden.id %}" class="btn btn-danger" id="link">Cancelar Pedido</a></td>
                     {% else %}
                     <td {% if orden.estado == 'Entregado' %} class="text-success" {% else %} class="text-danger" {% endif %}>{{ orden.estado|upper }}</td>
                     {% endif %}
@@ -126,7 +126,19 @@
     <script src="{% static '/js/sortDate.js' %}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.15.2/xlsx.full.min.js"></script>
     <script src="{% static '/js/export.js' %}"></script>
-
+    <script>
+    var link = document.getElementById("link");
+            link.addEventListener("click", function(event) {
+                event.preventDefault();
+                var button = document.createElement("button");
+                button.innerHTML = "Cargando...";
+                button.disabled = true;
+                link.parentNode.replaceChild(button, link);
+                setTimeout(function(){
+                    window.location = link.href;
+                },3000);
+            });
+          </script>
 
 
 {% endblock %}

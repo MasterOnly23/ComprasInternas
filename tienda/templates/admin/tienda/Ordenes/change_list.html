@@ -1,0 +1,24 @@
+{% extends "admin/change_list.html" %}
+
+{% block result_list %}
+    {{ block.super }}
+    <div id="changelist-filter">
+        <h3>{% trans 'Filtrar por fecha de creación' %}</h3>
+        <form method="get" action="" id="fecha-filter">
+            {% csrf_token %}
+            {{ cl.formset.media }}
+            <input type="hidden" name="{{ cl.lookup_params }}" value="{{ cl.params }}">
+            <div class="field-box">
+                <label for="id_fecha_creacion__gte">{% trans 'Desde' %}:</label>
+                {{ cl.formset.form.fecha_creacion__gte }}
+            </div>
+            <div class="field-box">
+                <label for="id_fecha_creacion__lte">{% trans 'Hasta' %}:</label>
+                {{ cl.formset.form.fecha_creacion__lte }}
+            </div>
+            <div class="submit-row">
+                <input type="submit" value="{% trans 'Buscar' %}" class="default">
+            </div>
+        </form>
+    </div>
+{% endblock %}

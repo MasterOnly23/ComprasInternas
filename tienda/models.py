@@ -24,7 +24,7 @@ class Producto(models.Model):
     precio = models.DecimalField(max_digits=7, decimal_places=2)
     codProducto = models.CharField(max_length=4, null=True)
     nombreProducto = models.CharField(max_length=60, null=True)
-    imagen = models.ImageField(upload_to='img-productos', default="default_prod.png", blank=True)
+    imagen = models.ImageField(upload_to='img-productos', default="http://192.168.0.116/static/img/default_prod.png", blank=True)
 
 
     def asignar_precio(self, precio_float):
@@ -152,7 +152,7 @@ class TiendaProductos(models.Model):
     stockProducto = models.FloatField(db_column='stockProducto')  # Field name made lowercase.
     precio = models.FloatField()
     fechMod = models.DateTimeField(db_column='fechMod')  # Field name made lowercase.
-    imagen = models.ImageField(upload_to='img-productos', default="default_prod.png")
+    imagen = models.ImageField(upload_to='img-productos', default="http://192.168.0.116/static/img/default_prod.png")
     categoria = models.CharField(max_length=25 ,choices=categorias, null=True)
     
 
@@ -175,4 +175,39 @@ class ProductosDestacados(models.Model):
     class Meta:
         managed = False
         db_table = 'tienda_productosdestacados'
-        
+
+
+
+
+class PedidoCancelado(models.Model):
+    fecha_hoy = datetime.today().strftime('%Y-%m-%d')
+
+
+    nroPedido = models.ForeignKey(Orden, on_delete=models.CASCADE)
+    
+    
+    producto_id = models.IntegerField(null=True)
+    codProducto = models.CharField(max_length=4, null=True)
+    nombre = models.CharField(max_length=60)
+    precio = models.DecimalField(max_digits=7, decimal_places=2)
+    acumulado = models.DecimalField(max_digits=7, decimal_places=2)
+    cantidad = models.IntegerField()
+
+
+    def asignar_precio(self, precio_float, acumulado):
+        self.precio = Decimal(precio_float)
+        self.acumulado = Decimal(acumulado)
+
+
+
+    def __unicode__(self):
+        return self.nroPedido_id
+    
+    @staticmethod
+    def autocomplete_search_fields():
+        return ("nombre__icontains",)        
+
+    
+    class Meta:
+        managed = False
+        db_table = 'tienda_pedidocancelado'

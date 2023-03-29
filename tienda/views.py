@@ -15,7 +15,7 @@ from django.utils.html import strip_tags
 from django.contrib import messages
 from django.conf import settings
 
-from tienda.models import Producto, Pedido,Orden , TiendaStockproducto, TiendaArticulos, TiendaProductos, ProductosDestacados
+from tienda.models import Producto, Pedido,Orden , TiendaStockproducto, TiendaArticulos, TiendaProductos, ProductosDestacados, PedidoCancelado
 from tienda.carrito import Carrito
 
 
@@ -247,7 +247,7 @@ def pedido_mail(request):
     drogueria =  'drogueria@farmaciasdrahorro.com.ar'
     if not articulos == {}:
         try:
-            send_mail(subject, plain_message, from_email, [abastecimiento, drogueria, user.email], html_message=html_message)
+            send_mail(subject, plain_message, from_email, ['pruebacomprasinternas@gmail.com', user.email], html_message=html_message)
             messages.success(request, "Pedido realizado correctamente")
             limpiar_carrito(request)
             return redirect("index")
@@ -277,9 +277,9 @@ def buscarProducto(request, nombreProd):
                     Q(descProducto__icontains = queryset) |
                     Q(producto__icontains = queryset)
                     # Q(numero__icontains= queryset)
-                ).distinct()
+                ).order_by('-stockProducto').distinct()
 
-
+                
                 return render(request, 'buscar.html', {"articulo":articulo, "fecha_hoy":fecha_hoy, 'is_staff':is_staff})
             else:
                 return render(request, 'buscar.html', {"busqueda":queryset, "msg":'No data', "fecha_hoy":fecha_hoy, 'is_staff':is_staff})
@@ -336,7 +336,7 @@ def misPedidos(request):
     user = request.user
     #comprobar permisos
     is_staff = user.groups.filter(name='Staff').exists()
-    ordenes = Orden.objects.filter(user_id=user.id)
+    ordenes = Orden.objects.filter(user_id=user.id).order_by('-fecha_creacion')
     pagina = request.GET.get("page", 1)
     pedidosLista = list(ordenes)
     print(pedidosLista)
@@ -370,8 +370,18 @@ def cancelarPedido(request, id_orden):
     try:
             orden.estado = 'Cancelado'
             orden.save()
+            for pedido in pedidos:
+                pedidoCancelado = PedidoCancelado()
+                pedidoCancelado.nroPedido = pedido.nroPedido
+                pedidoCancelado.producto_id = pedido.producto_id
+                pedidoCancelado.codProducto = pedido.codProducto
+                pedidoCancelado.nombre = pedido.nombre
+                pedidoCancelado.precio = pedido.precio
+                pedidoCancelado.acumulado = pedido.acumulado
+                pedidoCancelado.cantidad = pedido.cantidad
+                pedidoCancelado.save()
             pedidos.delete()
-            send_mail(subject, plain_message, from_email, ['jfdaza@farmaciasdrahorro.com.ar', user.email], html_message=html_message)
+            send_mail(subject, plain_message, from_email, ['pruebacomprasinternas@gmail.com', user.email], html_message=html_message)
             messages.success(request, "Pedido cancelado correctamente")
             return misPedidos(request)
     except BadHeaderError:

@@ -3,6 +3,7 @@
 
 {% block title %}{% if subtitle %}{{ subtitle }} | {% endif %}{{ title }} | {{ site_title|default:_('Django site admin') }}{% endblock %}
 
+
 {% block branding %}
 <h1 id="site-name"><img src="{% static 'img/logos/apple-icon-57x57.png' %}" alt="logo dr ahorro" style="margin-right: 1rem; border-radius: 50%;" ><a href="{% url 'admin:index' %}">{{ site_header|default:_('Django administration') }}</a></h1>
 {% endblock %}

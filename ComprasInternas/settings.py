@@ -17,6 +17,7 @@ from pathlib import Path
 from decouple import config
 
 
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -25,7 +26,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-tn2qz^u$f72cq+6@gjxaoc$7*7l+^r5g=cn*(#i$-3h5uo-gx!'
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -36,12 +37,17 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    #material
+    # 'material.admin',
+    # 'material.admin.default',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rangefilter',
 
     #APPS
     'tienda.apps.TiendaConfig',
@@ -112,7 +118,7 @@ DATABASES = {
         'ENGINE': 'mssql',
         'NAME': 'ComprasInternasPrueba',
         'USER': 'sa',
-        'PASSWORD': 'SA2005',
+        'PASSWORD': config('PASS_DB'),
         'HOST': 'srvsql03',
         'PORT': '1433',
         'OPTIONS': {
@@ -163,7 +169,7 @@ DATETIME_FORMAT = 'Y-m-d'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-DEFAULT_IMAGE_PATH = 'media/default.png'
+# DEFAULT_IMAGE_PATH = 'media/default.png'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR,'media')
@@ -214,8 +220,8 @@ LOGIN_REDIRECT_URL = 'index'
 
 # DEFAULT_IMAGE_PATH = 'media/default.png'
 
-# MEDIA_URL = '/media/'
-# MEDIA_ROOT = os.path.join(BASE_DIR,'media')
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
@@ -228,3 +234,23 @@ os.makedirs(STATIC_TMP, exist_ok= True)
 os.makedirs(STATIC_ROOT, exist_ok= True)
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# Habilitar el registro de acciones en el panel de administración
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': 'INFO',
+        },
+    },
+}
+
+

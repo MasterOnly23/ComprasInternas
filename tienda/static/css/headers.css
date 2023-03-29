@@ -18,6 +18,8 @@
   color: rgba(255, 255, 255, 0.7);
   font-size: 2rem;
   margin-left: 2rem;
+  font-weight: var(--bs-nav-link-font-weight);
+  font-family: var(--bs-nav-link-font-family);;
 }
 
  .texto:hover{
