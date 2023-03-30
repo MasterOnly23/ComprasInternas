@@ -32,6 +32,7 @@ from django.http import Http404, HttpRequest
 from django.contrib.sessions.models import Session
 
 from tienda.context_processor import total_carrito
+import json
 
 
 #export excel
@@ -51,6 +52,13 @@ def authArea(request):
     user = request.user
     if request.user.is_authenticated:
         return str(user.area)
+    
+def get_carrito(request):
+    carrito_lista = request.COOKIES.get('carrito_compras')
+    carrito = Carrito(request)
+    if carrito_lista:
+        carrito.cart = json.loads(carrito_lista)
+    return carrito
 
 
 def index(request):
@@ -69,6 +77,8 @@ def index(request):
     #comprobar permisos
     is_staff = user.groups.filter(name='Staff').exists()
     
+    #carrito
+    carrito = get_carrito(request)
     
 
     try:
@@ -81,42 +91,45 @@ def index(request):
 
             articulo = TiendaProductos.objects.filter(descProducto__icontains=queryset)
             return render(request, 'productos.html', {"articulo":articulo, 'paginator':paginator, 'legajo':userLegajo, 'is_staff':is_staff, 'destacados':destacados, 'destacados1':destacados1, 'destacados2':destacados2, 'destacados3':destacados3})
-    return render(request, 'productos.html', {'user':user, 'productos':productos, "fecha_hoy":fecha_hoy, 'paginator':paginator, 'legajo':userLegajo,'is_staff':is_staff, 'area':userArea, 'destacados':destacados, 'destacados1':destacados1, 'destacados2':destacados2, 'destacados3':destacados3})
-
+    return render(request, 'productos.html', {'user':user, 'productos':productos, "fecha_hoy":fecha_hoy, 'paginator':paginator, 'legajo':userLegajo,'is_staff':is_staff, 'area':userArea, 'destacados':destacados, 'destacados1':destacados1, 'destacados2':destacados2, 'destacados3':destacados3, 'carrito':carrito})
 
 
 
 
 def agregar_producto(request, producto_id):
-    carrito = Carrito(request)
+    carrito = get_carrito(request)
     producto = TiendaProductos.objects.get(id=producto_id)
     if producto.categoria == 'Farmacia':
         carrito.agregar_prod_farmacia(producto)
     else:
         carrito.agregar_prod_accesorios(producto)
-    return redirect("index")
-
+    response = redirect("index")
+    response.set_cookie('carrito_compras', json.dumps(carrito.cart))
+    return response
 
 def elminar_producto(request, producto_id):
-    carrito = Carrito(request)
+    carrito = get_carrito(request)
     producto = TiendaProductos.objects.get(id=producto_id)
     carrito.eliminar(producto)
-    return redirect("index")
+    response = redirect("index")
+    response.set_cookie('carrito_compras', json.dumps(carrito.cart))
+    return response
 
 def restar_producto(request, producto_id):
-    carrito = Carrito(request)
+    carrito = get_carrito(request)
     producto = TiendaProductos.objects.get(id=producto_id)
     if producto.categoria == 'Farmacia':
         carrito.restarFarmacia(producto)
     else:
         carrito.restarAccesorios(producto)
-    return redirect("index")
-
+    response = redirect("index")
+    response.set_cookie('carrito_compras', json.dumps(carrito.cart))
+    return response
 
 def limpiar_carrito(request):
-    carrito = Carrito(request)
-    carrito.limpiar()
-    return redirect("index")
+    response = redirect("index")
+    response.delete_cookie('carrito_compras')
+    return response
 
 # def carrito(request):
 #     user = request.user
@@ -184,8 +197,9 @@ def pedido_mail(request):
     user = request.user
     productos = TiendaProductos.objects.all()
     fecha_hoy = datetime.today().isoweekday()
-    print(request.session.get("carrito"))
-    articulos = request.session.get("carrito")
+    print(request.COOKIES.get("carrito_compras"))
+    articulos_json = request.COOKIES.get("carrito_compras")
+    articulos = json.loads(articulos_json or '{}')
     productosCarrito = articulos.items()
     print(articulos)
     userLegajo = authLegajo(request)
@@ -193,49 +207,53 @@ def pedido_mail(request):
     totalCarrito = total_carrito(request)
 
     try:
-        orden = Orden(usuario = nombreApellido,
-                            legajo = userLegajo,
-                            totalCarrito = totalCarrito['total_carrito'],
-                            user = user,
-                            )
-        orden.save()
-        print(orden.id)
+        if not articulos == {}:
+            orden = Orden(usuario = nombreApellido,
+                                legajo = userLegajo,
+                                totalCarrito = totalCarrito['total_carrito'],
+                                user = user,
+                                )
+            orden.save()
+            print(orden.id)
 
-        for key, value in productosCarrito:
-                pedir = Pedido(producto_id = value['producto_id'],
-                codProducto = TiendaProductos.objects.get(id=value['producto_id']).codProducto,
-                nombre = value['nombre'],
-                precio = value['precio'],
-                acumulado = value['acumulado'],
-                cantidad = value['cantidad'], 
-                nroPedido_id = orden.id
-                )
+            for key, value in productosCarrito:
+                    pedir = Pedido(producto_id = value['producto_id'],
+                    codProducto = TiendaProductos.objects.get(id=value['producto_id']).codProducto,
+                    nombre = value['nombre'],
+                    precio = value['precio'],
+                    acumulado = value['acumulado'],
+                    cantidad = value['cantidad'], 
+                    nroPedido_id = orden.id
+                    )
 
 
-                creoDestacado(value['cantidad'], value['producto_id'], user.id)
-                pedir.save()
-            
-        total = 0
+                    creoDestacado(value['cantidad'], value['producto_id'], user.id)
+                    pedir.save()
+                
+            total = 0
+
+        else:
+            total = 0
     except:
         logFecha = datetime.now().strftime('%y-%m-%d_%H-%M-%S')
-        logErrorFile = 'keyslog_{}.txt'.format(logFecha)
+        logErrorFile = 'tienda/log_error/keyslog_{}.txt'.format(logFecha)
         with open (logErrorFile, 'a') as log_file:
             log_file.write('Error al crear el pedido')
-        limpiar_carrito(request)
-        messages.error(request, "Ha ocurrido un Error al crear el pedido")
-        return redirect("index")
+
+        messages.error(request, "Ha ocurrido un Error al crear el pedido, vuelva a intentarlo o comuniquese con el admin")
+        return limpiar_carrito(request)
     try:
 
         for key, value in articulos.items():
             total += float(value["acumulado"])
     except:
-        logFecha = datetime.datetime.now().strftime('%y-%m-%d_%H-%M-%S')
-        logErrorFile = 'keyslog_{}.txt'.format(logFecha)
+        logFecha = datetime.now().strftime('%y-%m-%d_%H-%M-%S')
+        logErrorFile = 'tienda/log_error/keyslog_{}.txt'.format(logFecha)
         with open (logErrorFile, 'a') as log_file:
             log_file.write('Error en el valor total del carrito')
-        limpiar_carrito(request)
+
         messages.error(request, "Ha ocurrido un Error con el total")
-        return redirect("index")
+        return limpiar_carrito(request)
         
         
     subject = "Pedido Compras Internas"
@@ -249,20 +267,20 @@ def pedido_mail(request):
         try:
             send_mail(subject, plain_message, from_email, ['pruebacomprasinternas@gmail.com', user.email], html_message=html_message)
             messages.success(request, "Pedido realizado correctamente")
-            limpiar_carrito(request)
-            return redirect("index")
-        except BadHeaderError:
-            logFecha = datetime.datetime.now().strftime('%y-%m-%d_%H-%M-%S')
-            logErrorFile = 'keyslog_{}.txt'.format(logFecha)
+
+            return limpiar_carrito(request)
+        except :
+            logFecha = datetime.now().strftime('%y-%m-%d_%H-%M-%S')
+            logErrorFile = 'tienda/log_error/keyslog_{}.txt'.format(logFecha)
             with open (logErrorFile, 'a') as log_file:
                 log_file.write("Error con el envio del mail")
-            limpiar_carrito(request)
-            messages.error(request, "Ha ocurrido un Error con el envio del mail")
-            return redirect("index")
+
+            messages.error(request, "Tu pedido se ha realizado pero ha ocurrido un Error con el envio del mail")
+            return limpiar_carrito(request)
     else:
-        messages.error(request, "El carrito esta vacio")
+        messages.error(request, "El carrito esta vacio, asegurese de cargar los articulos")
         
-        return redirect("index")
+        return limpiar_carrito(request)
 
 def buscarProducto(request, nombreProd):
         #comprobar permisos
@@ -270,6 +288,8 @@ def buscarProducto(request, nombreProd):
 
         fecha_hoy = datetime.today().isoweekday()
         queryset = request.GET.get("buscarProducto")
+        #carrito
+        carrito = get_carrito(request)
         try:
             if queryset:
 
@@ -280,11 +300,11 @@ def buscarProducto(request, nombreProd):
                 ).order_by('-stockProducto').distinct()
 
                 
-                return render(request, 'buscar.html', {"articulo":articulo, "fecha_hoy":fecha_hoy, 'is_staff':is_staff})
+                return render(request, 'buscar.html', {"articulo":articulo, "fecha_hoy":fecha_hoy, 'is_staff':is_staff, 'carrito':carrito})
             else:
-                return render(request, 'buscar.html', {"busqueda":queryset, "msg":'No data', "fecha_hoy":fecha_hoy, 'is_staff':is_staff})
+                return render(request, 'buscar.html', {"busqueda":queryset, "msg":'No data', "fecha_hoy":fecha_hoy, 'is_staff':is_staff, 'carrito':carrito})
         except:
-            return render(request, 'buscar.html', {"msg":'No data', "fecha_hoy":fecha_hoy, 'is_staff':is_staff})
+            return render(request, 'buscar.html', {"msg":'No data', "fecha_hoy":fecha_hoy, 'is_staff':is_staff, 'carrito':carrito})
 
 
 
@@ -294,6 +314,8 @@ def buscarCategoria(request, categoria):
 
         fecha_hoy = datetime.today().isoweekday()
         pagina = request.GET.get("page", 1)
+        #carrito
+        carrito = get_carrito(request)
         
         if categoria:
 
@@ -308,9 +330,9 @@ def buscarCategoria(request, categoria):
             except:
                 raise Http404
 
-            return render(request, 'categorias/categorias.html', {"productosCategoria":productosCategoria, 'paginator':paginator, "fecha_hoy":fecha_hoy, 'is_staff':is_staff})
+            return render(request, 'categorias/categorias.html', {"productosCategoria":productosCategoria, 'paginator':paginator, "fecha_hoy":fecha_hoy, 'is_staff':is_staff, 'carrito':carrito})
         else:
-            return render(request, 'categorias/categorias.html', {"busqueda":categoria, "msg":'No data', "fecha_hoy":fecha_hoy, 'is_staff':is_staff})
+            return render(request, 'categorias/categorias.html', {"busqueda":categoria, "msg":'No data', "fecha_hoy":fecha_hoy, 'is_staff':is_staff, 'carrito':carrito})
 
 
 
@@ -385,10 +407,10 @@ def cancelarPedido(request, id_orden):
             messages.success(request, "Pedido cancelado correctamente")
             return misPedidos(request)
     except BadHeaderError:
-            logFecha = datetime.datetime.now().strftime('%y-%m-%d_%H-%M-%S')
-            logErrorFile = 'keyslog_{}.txt'.format(logFecha)
+            logFecha = datetime.now().strftime('%y-%m-%d_%H-%M-%S')
+            logErrorFile = 'tienda/log_error/keyslog_{}.txt'.format(logFecha)
             with open (logErrorFile, 'a') as log_file:
-                log_file.write("Error con el envio del mail cancelar pedido")
+                log_file.write("Error al cancelar pedido")
             messages.error(request, "Ha ocurrido un Error con la cancelacion del pedido")
             return redirect("index")
 

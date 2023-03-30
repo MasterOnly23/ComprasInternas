@@ -1,0 +1,22 @@
+#cookie-popup {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 10px;
+    background-color: #f5f5f5;
+    text-align: center;
+    font-size: 14px;
+    font-family: Arial, sans-serif;
+    z-index: 999;
+  }
+  #accept-cookie, #reject-cookie {
+    margin: 5px;
+    padding: 5px 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+  }
+  

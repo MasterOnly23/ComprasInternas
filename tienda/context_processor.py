@@ -1,8 +1,10 @@
+import json
+
 def total_carrito(request):
     total = 0
-    if request.user.is_authenticated:
-        if "carrito" in request.session.keys():
-            for key, value in request.session["carrito"].items():
-                total += float(value["acumulado"])
+    if "carrito_compras" in request.COOKIES:
+        cart = json.loads(request.COOKIES["carrito_compras"])
+        for key, value in cart.items():
+            total += float(value["acumulado"])
 
     return {"total_carrito":total}

@@ -254,3 +254,7 @@ LOGGING = {
 }
 
 
+
+#Cookies
+SESSION_COOKIE_AGE = 3600 #para modificar el tiempo se session de autentificacion
+

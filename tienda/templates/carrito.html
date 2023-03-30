@@ -25,28 +25,28 @@
 
                 <tbody>
 
-                {% if request.session.carrito.items %}
-                {% for key, value in request.session.carrito.items %}
-                    <tr>
-                        <td>{{value.nombre}}</td>
-                        <td>{{value.precio|floatformat:2}}</td>
-                        <td>{{value.cantidad}}</td>
-                        <td>{{value.acumulado|floatformat:2}} </td>
-                        <td class="d-flex justify-content-center align-items-center">
-                            <a href="{% url 'restar' value.producto_id %}" class="badge btn btn-dark badge-dark" style="margin-right: 4px; background-color: #0f4c75;">-1</a>
-                            <a href="{% url 'add' value.producto_id %}" class="badge btn btn-dark badge-dark" style="background-color: #0f4c75;">+1</a>
-                        </td>
-                    </tr>
+                    {% if carrito.cart %}
+                    {% for key, value in carrito.cart.items %}
+                        <tr>
+                            <td>{{value.nombre}}</td>
+                            <td>{{value.precio|floatformat:2}}</td>
+                            <td>{{value.cantidad}}</td>
+                            <td>{{value.acumulado|floatformat:2}} </td>
+                            <td class="d-flex justify-content-center align-items-center">
+                                <a href="{% url 'restar' value.producto_id %}" class="badge btn btn-dark badge-dark" style="margin-right: 4px; background-color: #0f4c75;">-1</a>
+                                <a href="{% url 'add' value.producto_id %}" class="badge btn btn-dark badge-dark" style="background-color: #0f4c75;">+1</a>
+                            </td>
+                        </tr>
                     {% endfor %}
-                    {% else %}
-
+                {% else %}
                     <tr>
                         <td colspan="4">
                             <div class="alert alert-danger text-center">Sin Productos</div>
                         </td>
                     </tr>
-                    {% endif %}
-                    {% if request.session.carrito.items %}
+                {% endif %}
+                
+                {% if carrito.cart %}
                 <tr>
                     <th scope="row">Total:</th>
                     <td colspan="2">$ {{total_carrito|floatformat:2}}</td>
@@ -60,10 +60,14 @@
             {% if legajo != 'None' %}    
                 
                     {% if request.user.is_authenticated %}
-                        <div class="col-5"><a href="{% url 'enviar_pedido' %}" class="btn btn-success" id="link" >Realizar Pedido</a></div>
-                        {% else %} 
-                            <div class="col-5"><a href="{% url 'account_login' %}" class="btn btn-success">Realizar Pedido</a></div>             
+                        {% if carrito.cart %}
+                            <div class="col-5"><a href="{% url 'enviar_pedido' %}" class="btn btn-success" id="link" >Realizar Pedido</a></div>
+                        {% else %}
+                            <div class="col-5"><a class="btn btn-secondary disabled" role="button" aria-disabled="true">Realizar Pedido</a></div>
                         {% endif %}
+                    {% else %} 
+                            <div class="col-5"><a href="{% url 'account_login' %}" class="btn btn-success">Realizar Pedido</a></div>             
+                    {% endif %}
                     {% if fecha_hoy != 4 %} 
                 <div class="alert alert-warning text-center" style="margin-top: 5px;">Los pedidos solo se entregaran el dia Jueves</div>
                 {% endif %}
