@@ -103,7 +103,7 @@ def agregar_producto(request, producto_id):
         carrito.agregar_prod_farmacia(producto)
     else:
         carrito.agregar_prod_accesorios(producto)
-    response = redirect("index")
+    response = redirect(request.META.get('HTTP_REFERER'), request.GET)
     response.set_cookie('carrito_compras', json.dumps(carrito.cart))
     return response
 

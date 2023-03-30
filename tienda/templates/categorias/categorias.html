@@ -30,7 +30,7 @@
                               <p class="card-text d-flex justify-content-center">$ {{producto.precio|floatformat:2}}</p>
                               {% if producto.stockProducto != 0 %}
                               <div class="d-flex justify-content-center align-items-center">
-                              <a href="{% url 'add' producto.id %}" class="btn btn-md btn-outline-success link-carga">Agregar al carrito</a>
+                              <a href="{% url 'add' producto.id %}" class="btn btn-md btn-outline-success" id="link-carga">Agregar al carrito</a>
                             </div>
                             {% else %}
                             <div class="d-flex justify-content-center align-items-center">

@@ -98,6 +98,17 @@
                     window.location = link.href;
                 },3000);
             });
+            limpiar.addEventListener("click", function(e){
+                e.preventDefault();
+                let button = document.createElement("button");
+                button.innerHTML = "Espere..."
+                link.style.display = "none";
+                button.disabled = true;
+                limpiar.parentNode.replaceChild(button, limpiar);
+                setTimeout(function(){
+                    window.location = limpiar.href;
+                },2000);
+            })
             </script>
 
 
