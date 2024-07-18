@@ -3,7 +3,13 @@ from tienda.models import *
 from tienda.filter import FechaListFilter
 from django.contrib.admin.widgets import AdminDateWidget
 
-from rangefilter.filter import DateRangeFilter, DateTimeRangeFilter
+from rangefilter.filters import DateRangeFilter, DateTimeRangeFilter
+
+#actions for export excel
+from openpyxl import Workbook
+from django.http import HttpResponse
+from openpyxl.utils import get_column_letter
+from datetime import datetime, timedelta, date
 
 
 # Register your models here.
@@ -68,6 +74,7 @@ class BuscarAdminPedidoCancelado(admin.ModelAdmin):
 
 
 class BuscarAdminOrden(admin.ModelAdmin):
+    actions = ['export_to_excel']
     # con esto muestras los campos que deses al mostrar la lista en admin
     list_display=['id',  'usuario', 'legajo', 'totalCarrito', 'fecha_creacion', 'estado']
     # con esto añades un campo de texto que te permite realizar la busqueda, puedes añadir mas de un atributo por el cual se filtrará
@@ -77,9 +84,30 @@ class BuscarAdminOrden(admin.ModelAdmin):
     #ordering = ['para ordenar']
     list_editable = ['estado']
     list_display_links = ['id', 'usuario', 'legajo']
-    list_per_page = 15 #(crea paginacion custom)
+    list_per_page = 100 #(crea paginacion custom)
 
+    def export_to_excel(self, request, queryset):
+        fecha = datetime.now().strftime('%d-%m-%y')
+        response = HttpResponse(content_type='application/ms-excel')
+        response['Content-Disposition'] = 'attachment; filename="ordenes_{}.xlsx"'.format(fecha)
 
+        wb = Workbook()
+        ws = wb.active
+        field_names = [field.name for field in Orden._meta.fields]
+
+        ws.append(field_names)
+
+        for obj in queryset:
+            user_info = f"{obj.user.first_name} {obj.user.last_name}".upper()
+            ws.append([obj.id, user_info, obj.legajo, obj.totalCarrito, obj.fecha_creacion, obj.estado])
+    
+    # Ajustar el ancho de las columnas
+        for column_index, column_name in enumerate(field_names, start=1):
+            column_letter = get_column_letter(column_index)
+            column_dimensions = ws.column_dimensions[column_letter]
+            column_dimensions.width = 15 
+        wb.save(response)
+        return response
 
 
 

@@ -16,3 +16,4 @@ document.querySelector('.go-top-container')
         behavior: 'smooth'
     });
 });
+

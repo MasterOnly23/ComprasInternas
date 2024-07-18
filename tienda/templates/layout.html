@@ -42,9 +42,10 @@
 
     <link rel="stylesheet" href="{% static 'css/style-login-google.css' %}">
 
+    <!-- chatbot -->
+    <link rel="stylesheet" href="{% static 'css/chatbot.css' %}">   
     <!-- go top -->
     <link rel="stylesheet" href="{% static 'css/go-top.css' %}">   
-
 <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet">
 
     <style>
@@ -191,10 +192,10 @@
 
         </ul>
 
-        <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search" action="{% url 'buscarProducto' 'productos.nombre' %}" method="get">
+        <form id="form-buscar" class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search" action="{% url 'buscarProducto' 'productos.nombre' %}" method="get">
           <div class="container-buscar form-inline2">
           <input type="search" class="form-control form-control-dark text-bg-dark" placeholder="Buscar..." aria-label="Search" name="buscarProducto">
-          <button class="btn btn-outline-success my-2 my-sm-1 button-buscar" type="submit">Buscar</button>
+          <button class="btn btn-outline-success my-2 my-sm-1 button-buscar" form="form-buscar" type="submit">Buscar</button>
         </div>
         </form>
 
@@ -275,24 +276,146 @@
 
   <footer>
 
+    <div class="chatbot-btn-open rounded-circle cursor-pointer" id="chatbot">
+      <img class="rounded-circle" src="https://picsum.photos/50/50?random=1" alt="chatbot dr ahorro">
+
+  </div>
+
+  <div class="chatbot-container">
+    <div class="chatbot-header-close d-flex justify-content-end">
+      <button class=" cursor-pointer">
+        X
+    </button>
+    </div>
+    <div class="chatbot-header d-flex justify-content-around">
+        <div class="chatbot-header-title">
+            <h3 class="fw-bold">Chatbot Dr Ahorro</h3>
+        </div>
+    </div>
+    <div class="chatbot-body">
+        <ul>
+            <!-- Mensaje del chatbot -->
+             <div class="container-message-bot d-flex gap-1">
+              <div class="container-identifier d-flex flex-column justify-content-between align-items-center">
+            <div class="message-identifier"></div>
+            <img class="rounded-circle" src="https://i.ytimg.com/vi/bp8jqez4bX0/maxresdefault.jpg" alt="" width="40px">
+          </div>
+            <li class="message chatbot">
+              <div class="message-content p-1">
+                <p class="m-0 pb-1">Hola! Soy el chatbot de Dr Ahorro, ¿en qué puedo ayudarte?</p>
+              </div>
+            </li>
+          </div>
+            <!-- Mensaje del usuario -->
+             <div class="container-message-user d-flex justify-content-end flex-column mb-1">
+            <div class="message-identifier d-flex justify-content-end">Tú:</div>
+            <li class="message user">
+              <div class="message-content p-1">
+                <p class="m-0 pb-1">¿Cuáles son los horarios de atención?</p>
+              </div>
+            </li>
+          </div>
+            <!-- Respuesta del chatbot -->
+            <div class="container-message-bot d-flex gap-1 mt-1">
+              <div class="container-identifier d-flex flex-column justify-content-between align-items-center">
+            <div class="message-identifier"></div>
+            <img class="rounded-circle" src="https://i.ytimg.com/vi/bp8jqez4bX0/maxresdefault.jpg" alt="" width="40px">
+          </div>
+            <li class="message chatbot">
+              <div class="message-content p-1">
+                <p class="m-0 pb-1">Nuestros horarios de atención son de Lunes a Viernes de 9:00 a 18:00.</p>
+              </div>
+            </li>
+          </div>
+            
+        </ul>
+    </div>
+    <div class="chatbot-footer">
+        <form  id="form-chatbot" class="form-message-chatbot">
+            <input type="text" placeholder="Escribe tu mensaje..." class="chatbot-footer-input">
+            <button type="submit" form="form-chatbot" class="chatbot-footer-button">Enviar</button>
+        </form>
+    </div>
+</div>
+
     <div class="container">
       <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4">
         <div class="col-md-4 d-flex align-items-center">
-          <span class="mb-3 mb-md-0 text-muted">  &copy; 2023 Farmacias Dr Ahorro</span>
+          <span class="mb-3 mb-md-0 text-muted">  &copy; {{anoActual}} Farmacias Dr Ahorro</span>
         </div>
       </footer>
     </div>
 
-    <div class="go-top-container">
+    <!-- <div class="go-top-container">
       <div class="go-top-button">
-       <img src="{% static 'img/flecha-hacia-arriba.png' %}" alt="Volver Arriba" width="30px">
+       <img class="img-go-top" src="{% static 'img/flecha-hacia-arriba.png' %}" alt="Volver Arriba" width="30px">
 
-      </div>
+      </div> -->
 
   </footer>
 
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+    console.log("DOM completamente cargado y analizado");
 
+    const form = document.querySelector('#form-chatbot');
+    if (!form) {
+        console.error("El formulario #form-chatbot no se encontró.");
+        return;
+    }
+    console.log("Formulario encontrado:", form);
+
+    const input = document.querySelector('.chatbot-footer-input');
+    const chatBody = document.querySelector('.chatbot-body ul');
+
+    form.addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevenir el comportamiento por defecto del formulario
+        console.log("Formulario enviado");
+
+        const messageText = input.value.trim(); // Obtener el texto ingresado
+
+        if (messageText) {
+            // Crear el contenedor del mensaje del usuario
+            const messageContainer = document.createElement('div');
+            messageContainer.className = 'container-message-user d-flex justify-content-end flex-column mb-1';
+
+            // Crear el identificador del mensaje
+            const identifier = document.createElement('div');
+            identifier.className = 'message-identifier d-flex justify-content-end';
+            identifier.textContent = 'Tú:';
+
+            // Crear el elemento li para el mensaje
+            const messageLi = document.createElement('li');
+            messageLi.className = 'message user';
+
+            // Crear el contenido del mensaje
+            const messageContent = document.createElement('div');
+            messageContent.className = 'message-content  p-1';
+            const messageParagraph = document.createElement('p');
+            messageParagraph.className = 'm-0 pb-1';
+            messageParagraph.textContent = messageText;
+
+            // Ensamblar el mensaje
+            messageContent.appendChild(messageParagraph);
+            messageLi.appendChild(messageContent);
+
+            // Añadir el identificador y el mensaje al contenedor
+            messageContainer.appendChild(identifier);
+            messageContainer.appendChild(messageLi);
+
+            // Añadir el contenedor del mensaje al cuerpo del chat
+            chatBody.appendChild(messageContainer);
+
+            messageContainer.scrollIntoView({ behavior: 'smooth' });
+
+            // Limpiar el campo de entrada
+            input.value = '';
+        }
+    });
+});
+  </script>
     <script src="{% static 'js/bootstrap.bundle.js' %}"></script>
+    <script src="{% static 'js/openchat.js' %}" ></script>
     <script src="{% static 'js/go-top.js' %}"></script>
     
 

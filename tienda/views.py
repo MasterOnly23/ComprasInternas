@@ -1,3 +1,4 @@
+import os
 from django.shortcuts import render, HttpResponse, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -37,8 +38,23 @@ import json
 
 #export excel
 from django_excel import make_response_from_query_sets
+
+
+#IA
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from transformers import pipeline, AutoModelForCausalLM, AutoTokenizer
+import torch
+import json
+
 # Create your views here.
 
+
+#fecha copyright
+def fechaCopy():
+    date = datetime.today()
+    anoActual = date.strftime("%Y")
+    return anoActual
 
 #parseo legajo
 def authLegajo(request):
@@ -71,14 +87,16 @@ def index(request):
     fecha_hoy = datetime.today().isoweekday()
 
     destacados = ProductosDestacados.objects.filter(user_id = user.id).order_by('-acumulador')[:6]
-    destacados1 = destacados[0:2]
-    destacados2 = destacados[2:4]
-    destacados3 = destacados[4:6]
+    destacados1 = destacados[0:3]
+    destacados2 = destacados[3:6]
     #comprobar permisos
     is_staff = user.groups.filter(name='Staff').exists()
     
     #carrito
     carrito = get_carrito(request)
+
+    #copyright
+    anoActual = fechaCopy()
     
 
     try:
@@ -90,8 +108,8 @@ def index(request):
     if queryset:
 
             articulo = TiendaProductos.objects.filter(descProducto__icontains=queryset)
-            return render(request, 'productos.html', {"articulo":articulo, 'paginator':paginator, 'legajo':userLegajo, 'is_staff':is_staff, 'destacados':destacados, 'destacados1':destacados1, 'destacados2':destacados2, 'destacados3':destacados3})
-    return render(request, 'productos.html', {'user':user, 'productos':productos, "fecha_hoy":fecha_hoy, 'paginator':paginator, 'legajo':userLegajo,'is_staff':is_staff, 'area':userArea, 'destacados':destacados, 'destacados1':destacados1, 'destacados2':destacados2, 'destacados3':destacados3, 'carrito':carrito})
+            return render(request, 'productos.html', {"articulo":articulo, 'paginator':paginator, 'legajo':userLegajo, 'is_staff':is_staff, 'destacados':destacados, 'destacados1':destacados1, 'destacados2':destacados2, 'carrito':carrito, 'anoActual':anoActual})
+    return render(request, 'productos.html', {'user':user, 'productos':productos, "fecha_hoy":fecha_hoy, 'paginator':paginator, 'legajo':userLegajo,'is_staff':is_staff, 'area':userArea, 'destacados':destacados, 'destacados1':destacados1, 'destacados2':destacados2, 'carrito':carrito, 'anoActual':anoActual})
 
 
 
@@ -290,6 +308,10 @@ def buscarProducto(request, nombreProd):
         queryset = request.GET.get("buscarProducto")
         #carrito
         carrito = get_carrito(request)
+
+        #copyright
+        anoActual = fechaCopy()
+
         try:
             if queryset:
 
@@ -300,9 +322,9 @@ def buscarProducto(request, nombreProd):
                 ).order_by('-stockProducto').distinct()
 
                 
-                return render(request, 'buscar.html', {"articulo":articulo, "fecha_hoy":fecha_hoy, 'is_staff':is_staff, 'carrito':carrito})
+                return render(request, 'buscar.html', {"articulo":articulo, "fecha_hoy":fecha_hoy, 'is_staff':is_staff, 'carrito':carrito, 'anoActual':anoActual})
             else:
-                return render(request, 'buscar.html', {"busqueda":queryset, "msg":'No data', "fecha_hoy":fecha_hoy, 'is_staff':is_staff, 'carrito':carrito})
+                return render(request, 'buscar.html', {"busqueda":queryset, "msg":'No data', "fecha_hoy":fecha_hoy, 'is_staff':is_staff, 'carrito':carrito, 'anoActual':anoActual})
         except:
             return render(request, 'buscar.html', {"msg":'No data', "fecha_hoy":fecha_hoy, 'is_staff':is_staff, 'carrito':carrito})
 
@@ -316,6 +338,9 @@ def buscarCategoria(request, categoria):
         pagina = request.GET.get("page", 1)
         #carrito
         carrito = get_carrito(request)
+
+        #copyright
+        anoActual = fechaCopy()
         
         if categoria:
 
@@ -330,9 +355,9 @@ def buscarCategoria(request, categoria):
             except:
                 raise Http404
 
-            return render(request, 'categorias/categorias.html', {"productosCategoria":productosCategoria, 'paginator':paginator, "fecha_hoy":fecha_hoy, 'is_staff':is_staff, 'carrito':carrito})
+            return render(request, 'categorias/categorias.html', {"productosCategoria":productosCategoria, 'paginator':paginator, "fecha_hoy":fecha_hoy, 'is_staff':is_staff, 'carrito':carrito, 'anoActual':anoActual})
         else:
-            return render(request, 'categorias/categorias.html', {"busqueda":categoria, "msg":'No data', "fecha_hoy":fecha_hoy, 'is_staff':is_staff, 'carrito':carrito})
+            return render(request, 'categorias/categorias.html', {"busqueda":categoria, "msg":'No data', "fecha_hoy":fecha_hoy, 'is_staff':is_staff, 'carrito':carrito, 'anoActual':anoActual})
 
 
 
@@ -342,15 +367,19 @@ def buscarCategoria(request, categoria):
 def perfil(request):
     #comprobar permisos
     is_staff = request.user.groups.filter(name='Staff').exists()
+    #copyright
+    anoActual = fechaCopy()
 
-    return render(request, 'perfil.html', {'is_staff':is_staff})
+    return render(request, 'perfil.html', {'is_staff':is_staff, 'anoActual':anoActual})
 
 
 def contact_form(request):
     user = request.user
     #comprobar permisos
     is_staff = user.groups.filter(name='Staff').exists()
-    return render(request, 'contacto.html', {'user':user, 'is_staff':is_staff})
+    #copyright
+    anoActual = fechaCopy()
+    return render(request, 'contacto.html', {'user':user, 'is_staff':is_staff, 'anoActual':anoActual})
 
 
 @login_required
@@ -361,17 +390,19 @@ def misPedidos(request):
     ordenes = Orden.objects.filter(user_id=user.id).order_by('-fecha_creacion')
     pagina = request.GET.get("page", 1)
     pedidosLista = list(ordenes)
+    #copyright
+    anoActual = fechaCopy()
     print(pedidosLista)
     if len(pedidosLista) == 0:
         msg = 'Aun no tienes nigun pedido'
-        return render(request, 'mis_pedidos.html', {'ordenes':ordenes,'is_staff':is_staff, 'msg':msg})
+        return render(request, 'mis_pedidos.html', {'ordenes':ordenes,'is_staff':is_staff, 'msg':msg, 'anoActual':anoActual})
     else:
         try:
             paginator = Paginator(ordenes, 15)
             ordenes = paginator.page(pagina)
         except:
             raise Http404
-        return render(request, 'mis_pedidos.html', {'ordenes':ordenes,'is_staff':is_staff, 'paginator':paginator})
+        return render(request, 'mis_pedidos.html', {'ordenes':ordenes,'is_staff':is_staff, 'paginator':paginator, 'anoActual':anoActual})
 
 
 @login_required
@@ -403,7 +434,7 @@ def cancelarPedido(request, id_orden):
                 pedidoCancelado.cantidad = pedido.cantidad
                 pedidoCancelado.save()
             pedidos.delete()
-            send_mail(subject, plain_message, from_email, ['pruebacomprasinternas@gmail.com', user.email], html_message=html_message)
+            send_mail(subject, plain_message, from_email, [abastecimiento,drogueria, user.email], html_message=html_message)
             messages.success(request, "Pedido cancelado correctamente")
             return misPedidos(request)
     except BadHeaderError:
@@ -722,3 +753,11 @@ class AdministradorView(HttpRequest):
 
     #         return render(request, 'administrador/lista_pedidos_fecha.html', {'pedidos':pedidos, 'users':users})
 
+
+# Implementacion IA LLama 3
+
+# Construir la ruta absoluta al modelo
+
+# model_path = "llama3-8b-instruct"
+# tokenizer = AutoTokenizer.from_pretrained(model_path)
+# model = AutoModelForCausalLM.from_pretrained(model_path)

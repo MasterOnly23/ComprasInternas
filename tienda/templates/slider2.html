@@ -1,0 +1,120 @@
+{% load static %}
+
+<link href="{% static 'js/bootstrap.bundle.js' %}" rel="stylesheet">
+<!-- <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet"> -->
+
+<style>
+    .fila-slider{
+        gap: 1rem;
+        display: flex;
+        justify-content: center;
+    }
+</style>
+{% if destacados1|length != 0 %}
+<div class="mt-5">
+<h2 class="title text-center" style="color: #0f4c75;">TUS PRODUCTOS DESTACADOS</h2>
+</div>
+
+
+
+<div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-inner">
+
+      <div class="carousel-item active">
+
+        
+        <div class="row fila-slider">
+        {% for destacado in destacados1 %}
+        <div class="card mb-3" style="max-width: 400px; max-height: 250px;">
+            <div class="row g-0">
+              <div class="col-md-4">
+                <img src="{{destacado.producto.imagen}}" class="img-fluid rounded-start" alt="...">
+              </div>
+              <div class="col-md-8">
+                <div class="card-body">
+                  <h5 class="card-title">{{ destacado.producto.descProducto }}</h5>
+                  <p class="card-text">{{ destacado.producto.producto }}</p>
+                  <p class="card-text">$ {{destacado.producto.precio|floatformat:2}}</p>
+                  {% if destacado.producto.stockProducto != 0 %}
+                    <div class="d-flex justify-content-center align-items-center">
+                        <a href="{% url 'add' destacado.producto.id %}" class="btn btn-md btn-outline-success">Agregar al carrito</a>
+                    </div>
+                    {% else %}
+                        <div class="d-flex justify-content-center align-items-center">
+                            <div class="d-flex justify-content-center align-items-center alert alert-danger text-center " >
+                                <p style="width: 8rem; height: 0.2rem;">Sin Stock</p>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+
+          
+
+        </div>
+
+      </div>
+
+      {% if destacados2|length != 0 %}
+      <div class="carousel-item">
+        <div class="row fila-slider">
+            {% for destacado in destacados2 %}
+            <div class="card mb-3" style="max-width: 400px; max-height: 250px;">
+                <div class="row g-0">
+                  <div class="col-md-4">
+                    <img src="{{destacado.producto.imagen}}" class="img-fluid rounded-start" alt="...">
+                  </div>
+                  <div class="col-md-8">
+                    <div class="card-body">
+                      <h5 class="card-title">{{ destacado.producto.descProducto }}</h5>
+                      <p class="card-text">{{ destacado.producto.producto }}</p>
+                      <p class="card-text">$ {{destacado.producto.precio|floatformat:2}}</p>
+                      {% if destacado.producto.stockProducto != 0 %}
+                        <div class="d-flex justify-content-center align-items-center">
+                            <a href="{% url 'add' destacado.producto.id %}" class="btn btn-md btn-outline-success">Agregar al carrito</a>
+                        </div>
+                        {% else %}
+                            <div class="d-flex justify-content-center align-items-center">
+                                <div class="d-flex justify-content-center align-items-center alert alert-danger text-center " >
+                                    <p style="width: 8rem; height: 0.2rem;">Sin Stock</p>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {% endfor %}
+    
+              
+    
+            </div>
+      </div>
+      {% endif %}
+
+
+
+
+
+    </div>
+
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
+      {% if destacados2|length != 0 %}
+      <span class="carousel-control-prev-icon" aria-hidden="true" style="background-color: black;"></span>
+      {% endif %}
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
+      {% if destacados2|length != 0 %}
+      <span class="carousel-control-next-icon" aria-hidden="true" style="background-color: black;"></span>
+      {% endif %}
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+  {% endif %}
+
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>

@@ -2,3 +2,12 @@
 runserver-comprasInternas-sqlserver.bat
 insertArticulos.sql
 updateArticulos.sql
+/LLM
+/media
+/venv
+/ComprasInternas/__pycache__
+/Tienda/__pycache__
+/Tienda/log_error
+/Tienda/migrations
+/usuarios/__pycache__
+/usuarios/migrations
